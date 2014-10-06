@@ -46,6 +46,7 @@
                         "type": "string"
                     },
                     "cmd:originalFormat": {
+                        "description":"string specifying the encoding scheme and ",
                         "type": "string"
                     },
                     "cmd:harvestURL": {
@@ -56,7 +57,7 @@
                         "type": "object",
                         "properties": {
                             "cmd:harvestSourceID": {
-                                "description": "<nif-id of the source>",
+                                "description": "<nif-id of the source>. This string should uniquely identifiy the harvest configuration, which includes the source URL, the encoding scheme and metadata dialect used by that source, and a CINERGI 'enhancement' workflow that has been executed on each record from that source.",
                                 "type": "string"
                             },
                             "cmd:viewID": {
