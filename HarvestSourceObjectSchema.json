@@ -157,51 +157,57 @@
                             "type": "string",
                             "format": "uri"
                         },
-                        "anyOf": [
-                            {
-                                "cmd:personName": {
-                                    "type": "string",
-                                    "description": "The name of an individualformat--Last Name,First name MI"
-                                }
-                            },
-                            {
-                                "cmd:personPosition": {
-                                    "type": "string",
-                                    "description": "identifies an individual who currently holds the named position in context of an organization"
-                                }
-                                    },
-                            {
-                                "cmd:organizationName": {
-                                    "type": "array",
-                                    "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "minItems": 1
-                                }
-                        }],
+                        "name": {
+							"anyOf": [
+								{
+									"cmd:personName": {
+										"type": "string",
+										"description": "The name of an individualformat--Last Name,First name MI"
+									}
+								},
+								{
+									"cmd:personPosition": {
+										"type": "string",
+										"description": "identifies an individual who currently holds the named position in context of an organization"
+									}
+										},
+								{
+									"cmd:organizationName": {
+										"type": "array",
+										"description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
+										"items": {
+											"type": "string"
+										},
+										"minItems": 1
+									}
+							}]
+						}
+						,
                         "cmd:organizationLink": {
                             "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
                             "type": "string",
                             "format": "uri"
                         },
-                        "anyOf": [
-                            {
-                                "cmd:phoneNumber": {
-                                    "description": "use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                    "type": "string"
-                                }
-                        },
-                            {
-                                "cmd:contactEmail": {
-                                    "description": "map to foaf:mbox",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "format": "email"
-                                    }
-                                }
-                    }],
+                        "contact": {
+							"anyOf": [
+								{
+									"cmd:phoneNumber": {
+										"description": "use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
+										"type": "string"
+									}
+							},
+								{
+									"cmd:contactEmail": {
+										"description": "map to foaf:mbox",
+										"type": "array",
+										"items": {
+											"type": "string",
+											"format": "email"
+										}
+									}
+							}] 
+						}
+						,
                         "cmd:contactAddress": {
                             "type": "string",
                             "description": "postal address,ideally formatted appropriate to the target country. One field because there is no clear reason to disaggregate the address into street, city, country, postal code, etc..."
