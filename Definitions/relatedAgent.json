@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@context": {
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "@vocab": "http://json-schema.org/draft-04/schema",
+        "@base": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dct": "http://purl.org/dc/terms/",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "description": "reusable schema fragment for binding an agent with a role for use in relation to some other activity or resource. Agent as an identifiable object; could be just an organization, or an individual who may or may not be assoicated with an organization. If the Agent is a person, this should be the same as the PersonURI",
+    "type": "object",
+    "id": "#RelatedAgent",
+    "required":["cmd:agentName"],
+    "properties": {
+        "cmd:agentRoleURI": {
+            "description": "string to uniquely indentify the agent role for interperability",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:agentRoleLabel": {
+            "type": "string",
+            "description": "string that users will understand to present role"
+        },
+        "cmd:agentRoleVocabularyURI": {
+            "description": "identifier for vocabulary in which the agent role is defined.",
+            "type": "string",
+            "format": "uri"
+        },
+
+        "cmd:agentURI": {
+            "description": "If we have an external URI for the agent, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:agentName": {
+            "anyOf": [
+                {
+                    "properties": {
+                        "cmd:personName": {
+                            "type": "string",
+                            "description": "The name of an individualformat--Last Name,First name MI"
+                        }
+                    }
+                                },
+                {
+                    "properties": {
+                        "cmd:personPosition": {
+                            "type": "string",
+                            "description": "identifies an individual who currently holds the named position in context of an organization"
+                        }
+                    }
+                                },
+                {
+                    "properties": {
+                        "cmd:organizationName": {
+                            "type": "array",
+                            "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        }
+                    }
+                                }]
+        },
+        "cmd:organizationURI": {
+            "description": "unique identifier for organization; use to link to the organization that the agent is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:contact": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "cmd:phoneNumber": {
+                            "description": "use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["cmd:phoneNumber"]
+
+                                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "cmd:contactEmail": {
+                            "description": "map to foaf:mbox",
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "email"
+                            }
+                        }
+                    },
+                    "required": ["cmd:contactEmail"]
+
+                                }]
+        },
+        "cmd:contactAddress": {
+            "type": "string",
+            "description": "postal address,ideally formatted appropriate to the target country. One field because there is no clear reason to disaggregate the address into street, city, country, postal code, etc..."
+        }
+    }
+}

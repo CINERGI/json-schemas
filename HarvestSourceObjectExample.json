@@ -1,8 +1,11 @@
 {
+     "@context": {
+        "chs": "http://resources.usgin.org/uri-gin/cinergi/schema/harvestsourceschema",
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema"},
     "chs:CINERGI_HarvestSource": {
         "chs:configurationID": "urn:cinergi:examplesource",
         "chs:harvestSourceLabel": "string",
-        "chs:harvestSourceDescription": "string",
+        "chs:harvestSourceDescription": "string. This is an example document with all JSON keys populated. Actual instance documents might leave out irrelevant optional elements",
         "chs:sourceContact": {
             "cmd:agentRoleURI": "uri",
             "cmd:agentRoleLabel": "text label for agent role",

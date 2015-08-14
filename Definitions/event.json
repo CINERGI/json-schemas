@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@context": {
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "@vocab": "http://json-schema.org/draft-04/schema",
+        "@base": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dct": "http://purl.org/dc/terms/",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "description": "reusable schema fragment for associating an event defined by an eventType and an optional event instance URI, with a date time string detailing when the event occurred. In simplest case can just provide dateTime if the event context is unambiguous in the importing object.",
+    "type": "object",
+    "required": ["cmd:dateTime"],
+    "id": "#EventDate",
+    "properties": {
+        "cmd:eventType": {
+            "description": "0..N  event may be categorized in various ways... E.g. creation, update, deprecation. Vocabulary somewhat dependent on context",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "cmd:eventTypeLabel": {
+                        "description": "label to identify the date type in a user interface",
+                        "type": "string"
+                    },
+                    "cmd:eventTypeURI": {
+                        "description": "identifier for referenced resource",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "cmd:eventTypeVocabularyURI": {
+                        "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
+                        "type": "string",
+                        "format": "URI"
+                    }
+                }
+            }
+        },
+        "cmd:eventName": {
+            "description": "name to identify the event for people",
+            "type": "string"
+        },
+        "cmd:eventURI": {
+            "description": "identifier for the event instance if this object is about a specific event",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:dateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Use ISO 8601: 2011-10-11T14:30"
+        }
+    }
+}

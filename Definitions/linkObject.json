@@ -1,0 +1,120 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@context": {
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "@vocab": "http://json-schema.org/draft-04/schema",
+        "@base": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dct": "http://purl.org/dc/terms/",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "description": "reusable schema fragment for situations that need a link (hypermedia affordance) to an online resource, typically for navigating linked data space.  The link is a locator--an identifier for a location that can provide a digital object.",
+    "type": "object",
+    "required": ["cmd:linkURL"],
+    "id": "#Link",
+    "properties": {
+        "cmd:linkURL": {
+            "description": "a web-derferencable identifier that locates the link target; typically an HTTP URI. URI syntax specifies that the identifier string includes a prefix that specifies the base protocol for the identifier",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:linkRelation": {
+            "type": "array",
+            "description": "Term from IANA rel vocabulary for consistency with IETF5988. Specifies relationship between resources. Use to assign semantics to the relationship between the linked resources.",
+            "required": ["cmd:relLabel"],
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "cmd:relLabel": {
+                        "description": "text to identify the reference in a UI",
+                        "type": "string"
+                    },
+                    "cmd:relURI": {
+                        "description": "identifier for the reltaion type.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "cmd:relVocabularyURI": {
+                        "description": "identifier for vocabulary in which the relLabel is defined.",
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            }
+        },
+        "cmd:linkTitle": {
+            "type": "string",
+            "description": "text to label this link in a UI"
+        },
+        "cmd:linkTargetResourceType": {
+            "type": "string",
+            "description": "typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html. This is the type of the file that will be accessed directly by the link URL; if this is a container file (e.g. zip archive), the innerResourceType property is used to specify the type of file with actual resource content."
+        },
+        "cmd:linkContentResourceType": {
+            "description": "File type for the actual resource content. Typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html",
+            "type": "string"
+        },
+        "cmd:linkOverlayAPI": {
+            "description": "Reference that identifies the API for messages tunneled to a component on the target server.  Optional, provide if such scheme or protocol is necessary to utilize the link. The URI should be defined by the service specification for the protocol or service type; version information should be included if applicable.  E.g. OGC WMS, WS-services. This property is typically used for services that encode remote procedure calls using identifiers dereferenced using standard HTTP methods (GET, POST).",
+            "type": "object",
+            "required": ["cmd:APILabel"],
+            "properties": {
+                "cmd:APILabel": {
+                    "description": "text to identify the overlay API in a UI",
+                    "type": "string"
+                },
+                "cmd:API-URI": {
+                    "description": "identifier for overly API",
+                    "type": "string",
+                    "format": "uri"
+                }
+            }
+        },
+        "cmd:linkProfile": {
+            "description": "Identifier for profile of specifications identified by type, overlayAPI, and template attributes. Optional, provide if additional conventions are necessary for content contained in messages through this link. Note that the same output scheme might be encoded using different types. Profiles typically add usage conventions when the interchange scheme offers alternate approaches, restrict cardinality for elements in the interchange format, or specify usage of particular vocabularies.",
+            "required": ["cmd:profileLabel"],
+            "properties": {
+                "cmd:profileLabel": {
+                    "description": "text to identify the profile in a UI",
+                    "type": "string"
+                },
+                "cmd:profileURI": {
+                    "description": "identifier for the profile",
+                    "type": "string",
+                    "format": "uri"
+                }
+            }
+        },
+        "cmd:linkParameters": {
+            "type": "array",
+            "description": "a dictionary (key-value pairs) of other paramters or properties that need to be associated with the link, e.g. WFS feature typeNames, WMS layer names",
+            "items": {
+                "type": "object",
+                "required": ["cmd:linkParameterLabel", "cmd:linkParameterValue"],
+                "properties": {
+                    "cmd:linkParameterLabel": {
+                        "type": "string",
+                        "description": "string to display, and identifier to link parameter to registry"
+                    },
+                    "cmd:linkParameterURI": {
+                        "description": "identifier for the parameter from a controlled vocabulary",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "cmd:linkParameterValue": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "cmd:linkDescription": {
+            "type": "string",
+            "description": "free text description of the target to help UI"
+        },
+        "cmd:linkTransferSize": {
+            "type": "integer",
+            "description": "advisory length of the linked content in octets"
+        }
+    }
+}
