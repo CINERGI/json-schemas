@@ -1,0 +1,274 @@
+  {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@context": {
+          "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+          "@vocab": "http://json-schema.org/draft-04/schema",
+          "@base": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+          "foaf": "http://xmlns.com/foaf/0.1/",
+          "dct": "http://purl.org/dc/terms/",
+          "skos": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "description": "DEPRECATED, SUPERSEDED, early work version...reusable schema fragment for resourceInformationModel.documentation of the information item types (DataType) and content semantics of structured data resources. Discrete coverage, quantitiative imagery, geospatial features. Synthesis of ISO19115-1, ISO19115-2, CSDGM, ISO11179. Each record or object in a dataset is about some entity. Each record is a description of an instance of the entity in some context, which may be spatial, temporal, or some other independent variable. In the O&M model, the 'entity' corresponds to the feature of interest, and the 'context' corresponds to a sampling feature. The content in this metadata section is focused on the semantics of the data in a dataset, useful for discovery of information of interest. Documentation of encoding, file structure, syntax are handled elsewhere (extras for now). The details of encoding, grid geometry, numeric resolution, and information exchange syntax are particular to each accessOption (distribution) of the dataset. The informaiton model should apply to all distributions. Schema includes sections for schema metadata information, definitions of attributes, definitions of entities [collection of attributes and constraints], and definitions of relationships between entities.",
+      "description": "JSON schema for describing a data type, intended as information design for information model registry. Base on RDA data type registry model, ISO11179, ISO19110, and CSDGM Entity-Attribute section.  The idea is to define a framework that can handle primitive data types (integer, text, float, boolean) and use these to build descriptions of complex data types like record type structures, objects, and grid/array data types, with URIs linking to concept registry to provide semantics.",
+      "type": "object",
+      "required": [""],
+      "id": "#InformationModel",
+      "required": ["dataTypeName", "dataTypeDescription"],
+      "properties": {
+          "dataTypeURI": {
+              "description": "The URI should unique identify major and minor versions, same URI==compatibile with same software",
+              "type": "string",
+              "format": "URI"
+          },
+          "dataTypeName": {
+              "description": "a unique name for this data type within some context, for use by people to identify the datatype.",
+              "type": "string",
+              "title": "Type Name"
+          },
+          "dataTypeVersion": {
+              "description": "The URI should unique identify major and minor versions. Bug fix and cosmetic updates can be identified with this version string",
+              "type": "string"
+          },
+          "dataTypeDescription": {
+              "description": "explanation of the intention, origin, and other information about the dataType",
+              "type": "string",
+              "title": "Description"
+          },
+          "applicableStandards": {
+              "type": "array",
+              "title": "Applicable Standards or Recommendations",
+              "uniqueItems": true,
+              "items": {
+                  "type": "object",
+                  "title": "Standard",
+                  "required": ["standardAuthority", "standardName"],
+                  "properties": {
+                      "standardURI": {
+                          "type": "string",
+                          "format": "URI"
+                      },
+                      "standardAuthority": {
+                          "title": "Issued By",
+                          "type": "string"
+                      },
+                      "standardName": {
+                          "title": "Standard Name",
+                          "type": "string",
+                          "description": "TID or standard number/name"
+                      },
+                      "natureOfApplicability": {
+                          "title": "Nature of Applicability",
+                          "type": "string",
+                          "enum": ["extends", "constrains", "specifies", "depends"]
+                      }
+                  }
+              }
+          },
+          "typeDefinitionProvenance": {
+              "type": "array",
+              "title": "Provenance",
+              "definition": "Record of the actions and parties responsibile for origin and any updates to the DataTypeDefinition.",
+              "items": {
+                  "type": "object",
+                  "properties": {
+                      "event": {},
+                      "responsibleParty": {}
+                  }
+              }
+          },
+          "expectedUses": {
+              "type": "array",
+              "definition": "array of text statements explaining intended application of data type",
+              "title": "Expected Uses",
+              "items": {
+                  "type": "string",
+                  "title": "Use"
+              }
+          },
+          "examples": {
+              "definition": "Example instances of the data type",
+              "type": "array",
+              "items": {
+                  "type": "object",
+                  "properties": {
+                      "exampleDataTypeInstance": {},
+                      "linkToExampleDataset": {}
+                  }
+              }
+          },
+          "cmd:attributes": {
+              "description": "This array documents the vector of properties that may be quantified for each data item instance.",
+              "type": "array",
+              "items": {
+                  "cmd:attributeLabel": {
+                      "description": "Label used to identify this attribute in this data resource",
+                      "type": "string"
+                  },
+                  "cmd:attributeURI": {
+                      "description": "unique identifier for this attribute. Identity based on phenomenon, contentType, Domain definitions; if the type is registered, these properties can be inherited from the registry, so only the attribute properties specific to this resource need be explicitly included in this metadata record",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeContentTypeLabel": {
+                      "description": "Categorization of the kind of information specified by this attribute, based on ISO19115 CoverageContentType, examples (from ISO19115-1): image, thematicClassification, physicalMeasurement,auxilliaryInformation, qualityInformation,referenceInformation, modelResult, coordinate. Value of 'group' indicates that this attribute instance is defining an attribute group, the attributeURI will be used to group other attributes in this group.",
+                      "type": "string"
+                  },
+                  "cmd:attributeContentTypeURI": {
+                      "description": "unique identifier for the ContentType, a categorization of the kind of information specified by this attribute, based on ISO19115 CoverageContentType, examples (from ISO19115-1): image, thematicClassification, physicalMeasurement,auxilliaryInformation, qualityInformation,referenceInformation, modelResult, coordinate. Value of 'group' indicates that this attribute instance is defining an attribute group, the attributeURI will be used to group other attributes in this group.",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeContentTypeVocabularyURI": {
+                      "description": "Unique identifier for the vocabulary within which the content type is identified; if the ContentTypeURI identifier type allows resolution of the vocabulary, this is redundant; for some schemes the TypeURI value may be a toke that is appended to the vocabulary URI to obtain the full TypeURI",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeContentTypeCodespace": {
+                      "description": "Codespace identifier for the contentType, for compatibility with ISO19115",
+                      "type": "string"
+                  },
+                  "cmd:attributePhenomenonName": {
+                      "description": "name of the physical phenomenon quantified by this attribute, e.g. fluid flux, planar geospatial orientation, density, velocity.",
+                      "type": "string"
+                  },
+                  "cmd:attributePhenomenonURI": {
+                      "description": "a registered identifier that uniquely specifies the physical phenomenon quantified by the attribute, for interoperability and linked data",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeGroupURI": {
+                      "description": "document a group definition as a separate attribute, requires an assigned attributeURI for the group, then use that URI here to aggregate attributes in a group. The GroupURI may be externally defined, but the URI must dereference to provide an explanation of the group.",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeDescription": {
+                      "description": "text description of the attribute characteristics",
+                      "type": "string"
+                  },
+                  "cmd:attributeMeasurementUnitsName": {
+                      "description": "name of the unit of measure used to quantify the attribure",
+                      "type": "string"
+                  },
+                  "cmd:attributeMeasurementUnitsURI": {
+                      "description": "Identifier for the units of measure from some registry, for interoperability",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeDomainVocabularyName": {
+                      "description": "part of a data type definition, defines the allowed values that may appear in valid attribute instances",
+                      "type": "string"
+                  },
+                  "cmd:attributeDomainVocabularyURI": {
+                      "description": "Unique idnetiifer for the vocabulary from which values for the attribute are assigned",
+                      "type": "string",
+                      "format": "URI"
+                  },
+                  "cmd:attributeTermEnumeration": {
+                      "description": "an array of values that actually appear in the data that quantify this attribute; applies to attributes that have term values that may be user-supplied (not controlled) or from a controlled vocabulary, in which case the values should be consistent withthe attributeVocabulary spcified in the attributeDomain element.",
+                      "type": "array",
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "cmd:attributeTerm": {
+                                  "type": "string"
+                              },
+                              "cmd:attributeTermDefinition": {
+                                  "type": "string"
+                              },
+                              "cmd:termOccurrenceCount": {
+                                  "type": "integer"
+                              }
+                          }
+                      }
+                  },
+                  "cmd:attributeNumericMinimum": {
+                      "description": "The minimum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
+                      "type": "Number"
+                  },
+                  "cmd:attributeNumericMaximum": {
+                      "description": "The maximum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
+                      "type": "Number"
+                  },
+                  "cmd:attributeNumberOfValues": {
+                      "description": "count of the number of data instances that have valid values for this attribute",
+                      "type": "integer"
+                  },
+                  "cmd:attributeMeanValue": {
+                      "description": "The mean of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
+                      "type": "Number"
+                  },
+                  "cmd:attributeStandardDeviation": {
+                      "description": "The standard deviation of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
+                      "type": "Number"
+                  },
+                  "cmd:attributeQuantityType": {
+                      "description": "kind of quantifier used to specify values for the attribute. Example values: count, boolean, category (controlled or ad hoc), number (includes magnitude, ratio, coordinate), DateTime, free text",
+                      "type": "string"
+                  },
+                  "cmd:attributeQuantityTypeURI": {
+                      "description": "Unique identifier, ideally from a registry, for  the kind of quantifier used to specify values for the attribute. For interoperability. Example values: count, boolean, category (controlled or ad hoc), number (includes magnitude, ratio, coordinate), DateTime, free text. A registered vocabulary of standard quantity types needs to be identified. ",
+                      "type": "string"
+                  },
+                  "cmd:attributeAcquisitionDescription": {
+                      "description": "free text description of the observation procedure, including instrument details, measurement protocols, environmental conditions, etc., content from MI_AcquitisionInformation (ISO19115-2), MD_ImageDescription (ISO19115) specific to the attribute values in the described data resource. Not detailed here because the information is very domain and data specific",
+                      "type": "string"
+                  },
+                  "cmd:attributeAcquisition": {
+                      "description": "Structured object documenting the observation procedure for machine clients, including instrument details, measurement protocols, environmental conditions, etc., content from MI_AcquitisionInformation (ISO19115-2), MD_ImageDescription (ISO19115) specific to the attribute values in the described data resource. Not detailed here because the information is very domain and data specific",
+                      "type": "object"
+                  }
+              }
+          },
+          "cmd:entities": {
+              "description": "",
+              "type": "array",
+              "required": [],
+              "items": {
+                  "type": "object",
+                  "properties": {
+                      "cmd:localEntityName": {
+                          "description": "the name for this data entity, table, object or feature used in the described data resource",
+                          "type": "string"
+                      },
+                      "cmd:dataTypeName": {
+                          "description": "Name of this information item, may be registered in a data type registry (c.f. RDA DataTypes).",
+                          "type": "string"
+                      },
+                      "cmd:dataTypeURI": {
+                          "description": "unique global identifier that can be dereferenced to establish equivalence or link to the data type specification. Identity of a data type is based on the set of allowed attributes, and the range of subject entities that that dataType is used to describe. The registered data type might be used to bring in the description of the data type instead of including in line",
+                          "type": "string",
+                          "format": "URI"
+                      },
+                      "cmd:entityOfInterestName": {
+                          "description": "name of the domain domain entity (feature) that is the subject of the information in members (records, objects) in a dataset. Example geologic unit, aquifer, Earth surface, river, lake, weather front, ocean current. The feature of interest carries properties that are quantified by some observation process operating on each sampling feature instance",
+                          "type": "string"
+                      },
+                      "cmd:entityOfInterestURI": {
+                          "description": "unique identifier for the doamin entity that is the subject of the data.",
+                          "type": "string",
+                          "format": "URI"
+                      },
+                      "cmd:entityOfInterestDescription": {
+                          "description": "free text description of the entity or feature of interest",
+                          "type": "string"
+                      },
+                      "cmd:samplingBasisName": {
+                          "description": "name of the entity (samplingFeature) that is the basis for assigning property values to the feature of interest. Examples include borehole interval, ground sampling cell (for a remote sensing image), outcrop station, rock sample, outcrop area, instrument, aggregation (of other data). The spatial representation section describes how the sampling features are geolocated",
+                          "type": "string"
+                      },
+                      "cmd:samplingBasisURI": {
+                          "description": "unique identifier for the samplingFeature or other sampling basis entity.",
+                          "type": "string",
+                          "format": "URI"
+                      },
+                      "cmd:samplingBasisDescription": {
+                          "description": "free text description of what was the basis for determining data values describing the entity(feature) of interest that is the subject of this data",
+                          "type": "string"
+                      }
+                  }
+              }
+          },
+          "cmd:entityRelationships": {
+          }
+      }
+  }

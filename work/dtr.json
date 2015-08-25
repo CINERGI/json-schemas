@@ -1,0 +1,398 @@
+{
+  "@graph" : [ {
+    "@id" : "_:t1",
+    "foaf:accountName" : "simon.cox@csiro.au",
+    "foaf:name" : "Simon Cox"
+  }, {
+    "@id" : "_:t10",
+    "@type" : "owl:Class",
+    "owl:unionOf" : {
+      "@list" : [ {
+        "@id" : "http://registry.it.csiro.au/ont/dtr#Standard"
+      }, {
+        "@id" : "http://registry.it.csiro.au/ont/dtr#Representation"
+      }, {
+        "@id" : "http://registry.it.csiro.au/ont/dtr#Relationship"
+      } ]
+    }
+  }, {
+    "@id" : "_:t11",
+    "@type" : "owl:Class",
+    "owl:unionOf" : {
+      "@list" : [ {
+        "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+      }, {
+        "@id" : "http://registry.it.csiro.au/ont/dtr#Property"
+      } ]
+    }
+  }, {
+    "@id" : "_:t15",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "rdfs:label"
+    }
+  }, {
+    "@id" : "_:t16",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "dct:description"
+    }
+  }, {
+    "@id" : "_:t17",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#issuer"
+    }
+  }, {
+    "@id" : "_:t18",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#value"
+    }
+  }, {
+    "@id" : "_:t19",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "rdfs:label"
+    }
+  }, {
+    "@id" : "_:t2",
+    "@type" : "owl:Restriction",
+    "owl:maxCardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "dct:modified"
+    }
+  }, {
+    "@id" : "_:t20",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "rdfs:label"
+    }
+  }, {
+    "@id" : "_:t3",
+    "reg:entity" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr"
+    },
+    "reg:sourceGraph" : {
+      "@id" : "http://registry.it.csiro.au/ont/_dtr:1#graph"
+    }
+  }, {
+    "@id" : "_:t4",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#expression"
+    }
+  }, {
+    "@id" : "_:t5",
+    "@type" : "owl:Restriction",
+    "owl:maxCardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "dct:created"
+    }
+  }, {
+    "@id" : "_:t6",
+    "@type" : "owl:Restriction",
+    "owl:minCardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "0"
+    },
+    "owl:onProperty" : {
+      "@id" : "dct:contributor"
+    }
+  }, {
+    "@id" : "_:t9",
+    "@type" : "owl:Restriction",
+    "owl:cardinality" : {
+      "@type" : "xsd:integer",
+      "@value" : "1"
+    },
+    "owl:onProperty" : {
+      "@id" : "rdfs:label"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/_dtr",
+    "@type" : "reg:RegisterItem",
+    "dct:dateAccepted" : {
+      "@type" : "xsd:dateTime",
+      "@value" : "2015-07-13T00:31:59.76Z"
+    },
+    "dct:dateSubmitted" : {
+      "@type" : "xsd:dateTime",
+      "@value" : "2015-07-13T00:31:31.518Z"
+    },
+    "dct:description" : "A RDFS/OWL implementation of the Data Type model from the RDA Data Types Registry working group. Based on JSON Schema provided in the final report of that working group.",
+    "reg:definition" : {
+      "@id" : "_:t3"
+    },
+    "reg:itemClass" : {
+      "@id" : "owl:Ontology"
+    },
+    "reg:notation" : "dtr",
+    "reg:register" : {
+      "@id" : "http://registry.it.csiro.au/ont"
+    },
+    "reg:status" : {
+      "@id" : "reg:statusExperimental"
+    },
+    "reg:submitter" : {
+      "@id" : "_:t1"
+    },
+    "rdfs:label" : "Data Type description",
+    "owl:versionInfo" : {
+      "@type" : "xsd:integer",
+      "@value" : "2"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr",
+    "@type" : "owl:Ontology",
+    "dct:created" : {
+      "@type" : "xsd:date",
+      "@value" : "2015-05-27"
+    },
+    "dct:creator" : [ {
+      "@id" : "http://orcid.org/0000-0002-3884-3420"
+    }, {
+      "@id" : "http://people.csiro.au/C/S/Simon-Cox"
+    } ],
+    "dct:description" : "A RDFS/OWL implementation of the Data Type model from the RDA Data Types Registry working group. Based on JSON Schema provided in the final report of that working group.",
+    "rdfs:comment" : "A RDFS/OWL implementation of the Data Type model from the RDA Data Types Registry working group. Based on JSON Schema provided in the final report of that working group.",
+    "rdfs:label" : "Data Type description",
+    "owl:imports" : {
+      "@id" : "http://purl.org/dc/elements/1.1/"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#DataType",
+    "@type" : "owl:Class",
+    "rdfs:label" : "Data type description",
+    "rdfs:subClassOf" : [ {
+      "@id" : "_:t15"
+    }, {
+      "@id" : "_:t16"
+    } ]
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#Property",
+    "@type" : "owl:Class",
+    "rdfs:comment" : "Type dependencies used for expressing how this type is built from other types",
+    "rdfs:label" : "Property",
+    "rdfs:subClassOf" : {
+      "@id" : "_:t9"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#Provenance",
+    "@type" : "owl:Class",
+    "rdfs:label" : "Provenance",
+    "rdfs:subClassOf" : [ {
+      "@id" : "_:t5"
+    }, {
+      "@id" : "_:t6"
+    }, {
+      "@id" : "_:t2"
+    } ]
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#Relationship",
+    "@type" : "owl:Class",
+    "rdfs:comment" : "Intent: How the properties are related to each other, e.g., grouping of properties, cardinality, etc., should be captured here.",
+    "rdfs:label" : "Experimental. Likely to change soon",
+    "rdfs:subClassOf" : {
+      "@id" : "_:t20"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#Representation",
+    "@type" : "owl:Class",
+    "rdfs:label" : "Representation and Semantic Expression",
+    "rdfs:subClassOf" : [ {
+      "@id" : "_:t4"
+    }, {
+      "@id" : "_:t18"
+    } ]
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#Standard",
+    "@type" : "owl:Class",
+    "rdfs:label" : "Standard",
+    "rdfs:subClassOf" : [ {
+      "@id" : "_:t19"
+    }, {
+      "@id" : "_:t17"
+    } ]
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#details",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "_:t10"
+    },
+    "rdfs:label" : "Details"
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#expectedUse",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+    },
+    "rdfs:label" : "Expected Use",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#expression",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Representation"
+    },
+    "rdfs:label" : "Expression",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#issuer",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Standard"
+    },
+    "rdfs:label" : "Issued By",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#natureOfApplicability",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Standard"
+    },
+    "rdfs:label" : "Nature of Applicability",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#property",
+    "@type" : "owl:ObjectProperty",
+    "rdfs:comment" : "Type dependencies used for expressing how this type is built from other types",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+    },
+    "rdfs:label" : "Properties",
+    "rdfs:range" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Property"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#provenance",
+    "@type" : "owl:ObjectProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+    },
+    "rdfs:range" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Provenance"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#relationship",
+    "@type" : "owl:ObjectProperty",
+    "rdfs:comment" : "Intent: How the properties are related to each other, e.g., grouping of properties, cardinality, etc., should be captured here.",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+    },
+    "rdfs:label" : "Experimental. Likely to change soon",
+    "rdfs:range" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Relationship"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#relativeName",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Relationship"
+    },
+    "rdfs:label" : "Relative Name",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#representationsAndSemantics",
+    "@type" : "owl:ObjectProperty",
+    "rdfs:domain" : {
+      "@id" : "_:t11"
+    },
+    "rdfs:label" : "Representations and Semantics",
+    "rdfs:range" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Representation"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#standard",
+    "@type" : "owl:ObjectProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#DataType"
+    },
+    "rdfs:label" : "Applicable Standard or Recommendation",
+    "rdfs:range" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Standard"
+    }
+  }, {
+    "@id" : "http://registry.it.csiro.au/ont/dtr#value",
+    "@type" : "owl:DatatypeProperty",
+    "rdfs:domain" : {
+      "@id" : "http://registry.it.csiro.au/ont/dtr#Representation"
+    },
+    "rdfs:label" : "Value",
+    "rdfs:range" : {
+      "@id" : "xsd:string"
+    }
+  } ],
+  "@context" : {
+    "ui" : "http://purl.org/linked-data/registry-ui#",
+    "dc" : "http://purl.org/dc/elements/1.1/",
+    "prov" : "http://www.w3.org/ns/prov#",
+    "ssd" : "http://www.w3.org/ns/sparql-service-description#",
+    "skosxl" : "http://www.w3.org/2008/05/skos-xl#",
+    "foaf" : "http://xmlns.com/foaf/0.1/",
+    "dgu" : "http://reference.data.gov.uk/def/reference/",
+    "odrs" : "http://schema.theodi.org/odrs#",
+    "void" : "http://rdfs.org/ns/void#",
+    "vann" : "http://purl.org/vocab/vann/",
+    "vs" : "http://www.w3.org/2003/06/sw-vocab-status/ns#",
+    "qb" : "http://purl.org/linked-data/cube#",
+    "org" : "http://www.w3.org/ns/org#",
+    "version" : "http://purl.org/linked-data/version#",
+    "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
+    "rr-ui" : "http://registry.it.csiro.au/structure/ui/",
+    "time" : "http://www.w3.org/2006/time#",
+    "reg" : "http://purl.org/linked-data/registry#",
+    "dct" : "http://purl.org/dc/terms/",
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
+    "owl" : "http://www.w3.org/2002/07/owl#",
+    "api" : "http://purl.org/linked-data/api/vocab#",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "skos" : "http://www.w3.org/2004/02/skos/core#",
+    "cc" : "http://creativecommons.org/ns#",
+    "ldp" : "http://www.w3.org/ns/ldp#"
+  }
+}
