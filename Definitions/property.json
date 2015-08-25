@@ -1,0 +1,72 @@
+ {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "description": "JSON schema for describing a conceptual property.  Implementation specifics inlcuded in the data type definition that uses this property",
+     "type": "object",
+     "required": ["dataTypeName", "dataTypeDescription"],
+     "properties": {
+         "propertyURI": {
+             "description": "unique identifier for this property",
+             "type": "string",
+             "format": "URI"
+         },
+         "propertyName": {
+             "description": "human readable identifier for the property",
+             "type": "string"
+         },
+         "phenomenonName": {
+             "description": "name of the physical phenomenon quantified by this property, e.g. fluid flux, planar geospatial orientation, density, velocity.",
+             "type": "string"
+         },
+         "phenomenonURI": {
+             "description": "a registered identifier that uniquely specifies the physical phenomenon quantified by the property, for interoperability and linked data",
+             "type": "string",
+             "format": "URI"
+         },
+         "primitiveTypeName": {
+             "definition": "Human-readable for this data element, should be from controlled vocabulary. primitive data type, based on basic types defined in ISO11179, clause 6.2.1 and XML data types; includes boolean, integer, Date, Value, String, DateTime, Text. [needs cleanup, might have enumeration?]; have to include Object that has another dataType as its value to allow for data structures.",
+             "type": "string"
+         },
+         "primitiveTypeURI": {
+             "type": "array",
+             "items": {
+                 "type": "string",
+                 "format": "URI"
+             }
+         },
+         "contentTypeName   ": {
+             "description": "Categorization of the kind of information specified by this attribute, examples (based on ISO19115-1): thematicClassification, physicalMeasurement, auxilliaryInformation, qualityInformation, calculatedValue, coordinate, group. Value of 'group' indicates that this element defines an attribute group, the dElemURI value will be used to group attributes that have a matching dElemGroupURI value.",
+             "type": "string"
+         },
+         "contentTypeURI": {
+             "description": "unique identifier for the ContentType.",
+             "type": "string",
+             "format": "URI"
+         },
+         "contentTypeVocabularyURI": {
+             "description": "Unique identifier for the vocabulary within which the content type is identified; if the ContentTypeURI identifier type allows resolution of the vocabulary, this is redundant; for some schemes the TypeURI value may be a toke that is appended to the vocabulary URI to obtain the full TypeURI",
+             "type": "string",
+             "format": "URI"
+         },
+         "contentTypeCodespace": {
+             "description": "Codespace identifier for the contentType, for compatibility with ISO19115",
+             "type": "string"
+         },
+         "quantityTypeName": {
+             "description": "kind of quantifier used to specify values for the attribute. Example values: count, boolean, category (controlled or ad hoc), number magnitude, number ratio, number coordinate, DateTime, free text, geometry, dataType",
+             "type": "string"
+         },
+         "quantityTypeURI": {
+             "description": "Unique identifier, ideally from a registry, for  the kind of quantifier used to specify values for the attribute. For interoperability. A registered vocabulary of standard quantity types needs to be identified. If quantityType is dataType, then this is the URI for the DataType that quantifies this property.",
+             "type": "string"
+         },
+         "quantityTypeVocabularyURI": {
+             "description": "Unique identifier for the vocabulary within which the quantity type is identified; if the quantityTypeURI identifier type allows resolution of the vocabulary, this is redundant; for some schemes the URI value may be a token that is appended to the vocabulary URI to obtain the full TypeURI",
+             "type": "string",
+             "format": "URI"
+         },
+         "conceptualDomainDescription": {
+             "definition": "Each value domain is a member of the extension of a concept, called the conceptual domain. A conceptual domain is a set of value meanings. The intension of a conceptual domain is its value meanings. Many value domains may be in the extension of the same conceptual domain, but a value domain is associated with one conceptual domain. ISO11179-1 clause 6.4",
+             "type": "string"
+         }
+     }
+ }

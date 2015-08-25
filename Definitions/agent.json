@@ -1,0 +1,118 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@context": {
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "@vocab": "http://json-schema.org/draft-04/schema",
+        "@base": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dct": "http://purl.org/dc/terms/",
+        "skos": "http://www.w3.org/2004/02/skos/core#"
+    },
+    "description": "reusable schema fragment for specifying an agent. Agent as an identifiable object; could be just an organization, or an individual who may or may not be assoicated with an organization. If the Agent is a person, this should be the same as the PersonURI. Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization. ",
+    "type": "object",
+    "id": "#Agent",
+    "required": ["cmd:agentName"],
+    "properties": {
+        "cmd:agentURI": {
+            "description": "If we have an external URI for the agent, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
+            "type": "string",
+            "format": "uri"
+        },
+        "anyOf": [
+            {
+                "cmd:personName": {
+                    "type": "string",
+                    "description": "The name of an individualformat--Last Name,First name MI"
+                },
+                "cmd:personURI": {
+                    "description": "If we have an external URI for the person, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
+                    "type": "string",
+                    "format": "uri"
+                },
+                "cmd:personPosition": {
+                    "type": "string",
+                    "description": "identifies an individual who currently holds the named position in context of an organization"
+                },
+                "cmd:organizationName": {
+                    "type": "array",
+                    "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
+                    "items": {
+                        "type": "string"
+                    },
+                    "minItems": 1
+                },
+                "cmd:organizationURI": {
+                    "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
+                    "type": "string",
+                    "format": "uri"
+                }
+                        }],
+        "anyOf": [
+            {
+                "cmd:voicePhoneNumber": {
+                    "description": "Number for voice contact. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+                        },
+            {
+                "cmd:faxPhoneNumber": {
+                    "description": "Number to send facsimile images. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+                        },
+            {
+                "cmd:contactEmail": {
+                    "description": "map to foaf:mbox",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                }
+                    }
+                        ],
+        "cmd:contactAddress": {
+            "type": "object",
+            "description": "postal address,ideally formatted appropriate to the target country. Disaggregate the address into street, city, country, postal code, etc... for compatibility with existing metadata specs, but for most (all?) use cases, the whole address could be put in the delivery point",
+            "properties": {
+                "cmd:deliveryPoint": {
+                    "type": "string",
+                    "description": "street address, PO box.  Full postal address should be in this field if it is not parsed into separate fields."
+                },
+                "cmd:city": {
+                    "type": "string",
+                    "description": "Name of delivery point city"
+                },
+                "cmd:administrativeArea": {
+                    "type": "string",
+                    "description": "name of delivery point state, province, district or other country subdivision"
+                },
+                "cmd:postalCode": {
+                    "type": "string",
+                    "description": "postal code for delivery point, using conventions local to the delivery point"
+                },
+                "cmd:country": {
+                    "type": "string",
+                    "description": "name of country for delivery point"
+                }
+            }
+        },
+        "cmd:agentInformation": {
+            "description": "text information, providing other details useful for making contact, like hours or ordering instructions",
+            "type": "string"
+        },
+        "cmd:agentLinks": {
+            "description": "link object to access online services related to agent",
+            "type": "array",
+            "items": {
+                "$ref": "definitions/linkObject.json#"
+            }
+        }
+    }
+}

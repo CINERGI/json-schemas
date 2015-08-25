@@ -1,0 +1,312 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "JSON schema for describing a data type, intended as information design for information model registry. Base on RDA data type registry model, ISO11179, ISO19110, ISO19115, ISO19156, and CSDGM Entity-Attribute section.  The idea is to define a framework that can handle primitive data types (integer, text, float, boolean) and use these to build descriptions of complex data types like record type structures, objects, and grid/array data types, with URIs linking to concept registry to provide semantics. Such dataTypes could then be used as components to assemble descriptions of datasets consisting of multiple datatypes with relationships.",
+    "type": "object",
+    "required": ["dataTypeName", "dataTypeDescription"],
+    "properties": {
+        "dataTypeURI": {
+            "description": "The URI should unique identify major and minor versions, same URI==compatibile with same software",
+            "type": "string",
+            "format": "URI"
+        },
+        "dataTypeName": {
+            "description": "a unique name for this data type within some context, for use by people to identify the datatype.",
+            "type": "string",
+            "title": "Type Name"
+        },
+        "dataTypeVersion": {
+            "description": "The URI should unique identify major and minor versions. Bug fix and cosmetic updates can be identified with this version string",
+            "type": "string"
+        },
+        "dataTypeDescription": {
+            "description": "explanation of the intention, origin, and other information about the dataType",
+            "type": "string",
+            "title": "Description"
+        },
+        "applicableStandards": {
+            "type": "array",
+            "title": "Applicable Standards or Recommendations used in the definition of this datatype.",
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "title": "Standard",
+                "required": ["standardAuthority", "standardName"],
+                "properties": {
+                    "standardURI": {
+                        "type": "string",
+                        "format": "URI"
+                    },
+                    "standardAuthority": {
+                        "title": "Issued By",
+                        "type": "string"
+                    },
+                    "standardName": {
+                        "title": "Standard Name",
+                        "type": "string",
+                        "description": "TID or standard number/name"
+                    },
+                    "natureOfApplicability": {
+                        "title": "Nature of Applicability",
+                        "type": "string",
+                        "enum": ["extends", "constrains", "specifies", "depends", "conforms"]
+                    }
+                }
+            }
+        },
+        "typeDefinitionProvenance": {
+            "type": "array",
+            "title": "Provenance",
+            "definition": "Record of the actions and parties responsibile for origin and any updates to the DataTypeDefinition.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "event": {
+                        "type": "object",
+                        "properties": {
+                            "$ref": "event.json#"
+                        }
+                    },
+                    "responsibleParty": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "responsiblePartyRoleURI": {
+                                    "description": "string to uniquely indentify the agent role for interperability",
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "responsiblePartyRoleLabel": {
+                                    "type": "string",
+                                    "description": "string that users will understand to present role"
+                                },
+                                "responsiblePartyRoleVocabularyURI": {
+                                    "description": "identifier for vocabulary in which the agent role is defined.",
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "responsiblePartyRoleCodespace": {
+                                    "description": "ISO19139 codespace value",
+                                    "type": "string"
+                                },
+                                "responsiblePartyAgent": {
+                                    "$ref": "agent.json#"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "expectedUses": {
+            "type": "array",
+            "definition": "array of text statements explaining intended application of data type",
+            "title": "Expected Uses",
+            "items": {
+                "type": "string",
+                "title": "Use"
+            }
+        },
+        "examples": {
+            "definition": "Example instances of the data type",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "exampleDataTypeInstance": {},
+                    "linkToExampleDataset": {
+                        "type": "object",
+                        "$ref": "linkObject.json#"
+                    }
+                }
+            }
+        },
+        "objectClassURI": {
+            "definition": "identifier for registed object class concept. specification of the idea, abstraction, or thing that is represented by the data type; independent of the actual implementation/representation. This implementation takes the view that a dataType represents some ObjectClass (definition 3.3.22, ISO11179-1) or domain entity, and uses the ISO19156 observation and measurement concepts of feature (entity) of interest and sampling feature (basis). this section based on ISO 11179, parts 1 and 3",
+            "type": "string",
+            "format": "URI"
+        },
+        "objectClassLabel": {
+            "definition": "text label to identify the object class in interfaces",
+            "type": "string"
+        },
+        "entityOfInterestName": {
+            "description": "name of the domain domain entity (feature) that is represented by this data type. Example geologic unit, aquifer, Earth surface, river, lake, weather front, ocean current. The feature of interest carries properties that are quantified by some observation process operating on each sampling feature instance",
+            "type": "string"
+        },
+        "entityOfInterestURI": {
+            "description": "unique identifier for the doamin entity that is the subject of the data. This is a array of identifiers, use for semantic mediation.",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "URI"
+            }
+        },
+        "entityOfInterestDescription": {
+            "description": "free text description of the entity or feature of interest",
+            "type": "string"
+        },
+        "samplingBasisName": {
+            "description": "name of the entity (samplingFeature) that is the basis for assigning property values to the feature of interest. Examples include borehole interval, ground sampling cell (for a remote sensing image), outcrop station, physical sample, outcrop area, instrument, aggregation (of other data). The spatial representation section describes how the sampling features are geolocated",
+            "type": "string"
+        },
+        "samplingBasisURI": {
+            "description": "unique identifier for the samplingFeature or other sampling basis entity.",
+            "type": "string",
+            "format": "URI"
+        },
+        "samplingBasisDescription": {
+            "description": "free text description of what was the basis for determining data values describing the entity(feature) of interest that is the subject of this data",
+            "type": "string"
+        },
+        "dataElements": {
+            "definition": "specification of how the data type concept (entity of interest) is represented (implemented). See ISO11179 part 3, Figure 16. Have to deal with record-type structures, object structures, and array structures? This section describes the content of an individual record or object, or the content associated with each cell in a grid or element in an array. The approach is to define the representation as a collection of properties, each represented by a particular physical data type, domain and constraints.",
+            "type": "array",
+            "required": ["dElemLabel", "dElemProperty"],
+            "items": {
+                "type": "object",
+                "definition": "a representation of a particular property or characteristic of the objectClass included in this data type",
+                "properties": {
+                    "dElemLabel": {
+                        "definition": "text string to identify this element/attribute/property in the context of this data type. May be different from the formal property name"
+                    },
+                    "dElemDefinition": {
+                        "definition": "text specification of the intention of the data element",
+                        "type": "string"
+                    },
+                    "dElemURI": {
+                        "definition": "unique identifier for the data element instance. Identity based on phenomenon, contentType, Domain definitions; if the type is registered, these properties can be inherited from the registry, so only the attribute properties specific to this resource need be explicitly included in this metadata record",
+                        "type": "string",
+                        "format": "URI"
+                    },
+                    "dElemProperty": {
+                        "description": "specifies the conceptual property represented by this element in the datatype. In the context of the datatype a property is assigned a particular measurement unit and domain, and may be grouped",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "property.json#"
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "propertyURI": {
+                                        "type": "string",
+                                        "format": "URI"
+                                    },
+                                    "propertyLink": {
+                                        "type": "object",
+                                        "properties": {
+                                            "$ref": "linkObject.json#"
+                                        }
+                                    }
+                                }
+                            }]
+                    },
+                    "dElemCardinality": {
+                        "description": "specify obligation,number restrictions on valid values for this element, use standard 1, 0..1, 0..n, 1..n notation.  (do we need to account for nilability?)",
+                        "type": "string"
+                    },
+                    "dElemMeasurementUnitsName": {
+                        "description": "name of the unit of measure used to quantify the attribure",
+                        "type": "string"
+                    },
+                    "dElemMeasurementUnitsURI": {
+                        "description": "Identifier for the units of measure from some registry, for interoperability",
+                        "type": "string",
+                        "format": "URI"
+                    },
+                    "dElemDomain": {
+                        "definition": "",
+                        "type": "object",
+                        "properties": {
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "EnumeratedDomain": {
+                                            "description": "an array of values that actually appear in the data that quantify this attribute; applies to attributes that have term values that may be user-supplied (not controlled) or from a controlled vocabulary, in which case the values should be consistent withthe attributeVocabulary spcified in the attributeDomain element.",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "EnumeratedDomainTerm": {
+                                                        "type": "string"
+                                                    },
+                                                    "EnumeratedDomainTermDefinition": {
+                                                        "type": "string"
+                                                    },
+                                                    "EnumeratedDomainTermOccurrenceCount": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                        },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "RangeDomainNumericMinimum": {
+                                            "description": "The minimum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
+                                            "type": "Number"
+                                        },
+                                        "RangeDomainNumericMaximum": {
+                                            "description": "The maximum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
+                                            "type": "Number"
+                                        }
+                                    }
+                                        },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "CVDomainVocabularyName": {
+                                            "description": "name of the vocabulary that defines the values that may appear in valid attribute instances",
+                                            "type": "string"
+                                        },
+                                        "CVDomainVocabularyURI": {
+                                            "description": "Unique identifier for the vocabulary from which values for the attribute are assigned",
+                                            "type": "string",
+                                            "format": "URI"
+                                        }
+                                    }
+                                        }
+                                    ]
+                        }
+                    },
+                    "dElemGroupURI": {
+                        "description": "document a group definition as a separate attribute, requires an assigned attributeURI for the group, then use that URI here to aggregate attributes in a group. The GroupURI may be externally defined, but the URI must dereference to provide an explanation of the group.",
+                        "type": "string",
+                        "format": "URI"
+                    }
+                }
+            }
+        },
+        "geometryType": {
+            "description": "term that specifies the type of geometry representeded by this property, should be linked to a controlled vocabulary. Example (ISO19107 geometryType codelist): curve, line, point, polygon, solid, surface, grid. Should distinguish 2D and 3D point",
+            "type": "string"
+        },
+        "geometryTypeURI": {
+            "type": "string",
+            "format": "URI"
+        },
+        "geometryTypeVocabularyURI": {
+            "description": "Unique identifier for the vocabulary within which the geometry type is identified; if the geometryTypeURI identifier type allows resolution of the vocabulary, this is redundant; for some schemes the TypeURI value may be a toke that is appended to the vocabulary URI to obtain the full TypeURI",
+            "type": "string",
+            "format": "URI"
+        },
+        "discreteSamplingSchemaType": {
+            "description": "Term or identifier that categorizes the schema used to describe the sampling structure for a gridded/array type data (discrete coverage), using a short string for machine processing. Typically the various dimensions map to some conceptual domain like space or time, sampled at some interval, See ISO19123, ISO19115-1 and 19115-2 MD_CoverageDescription and MD_GridSpatialRepresentation",
+            "type": "string"
+        },
+        "discreteSamplingExplanation": {
+            "description": "explanation of how the discrete coverage is represented and what kind of content is encoded here, for human reader. Actual discreteSamplingDescription is unstrained JSON blob included following this element.",
+            "type": "string"
+        },
+        "discreteSamplingDescription":{
+         "type":"object",
+            "description":"structure of this content is deteremined by the discreteSamplingSchemaType schema"
+        }
+    }
+}

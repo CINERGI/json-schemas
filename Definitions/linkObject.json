@@ -47,6 +47,10 @@
             "type": "string",
             "description": "text to label this link in a UI"
         },
+        "cmd:linkDescription": {
+            "type": "string",
+            "description": "free text description of the target to help UI"
+        },
         "cmd:linkTargetResourceType": {
             "type": "string",
             "description": "typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html. This is the type of the file that will be accessed directly by the link URL; if this is a container file (e.g. zip archive), the innerResourceType property is used to specify the type of file with actual resource content."
@@ -55,36 +59,42 @@
             "description": "File type for the actual resource content. Typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html",
             "type": "string"
         },
-        "cmd:linkOverlayAPI": {
-            "description": "Reference that identifies the API for messages tunneled to a component on the target server.  Optional, provide if such scheme or protocol is necessary to utilize the link. The URI should be defined by the service specification for the protocol or service type; version information should be included if applicable.  E.g. OGC WMS, WS-services. This property is typically used for services that encode remote procedure calls using identifiers dereferenced using standard HTTP methods (GET, POST).",
-            "type": "object",
-            "required": ["cmd:APILabel"],
-            "properties": {
-                "cmd:APILabel": {
-                    "description": "text to identify the overlay API in a UI",
-                    "type": "string"
-                },
-                "cmd:API-URI": {
-                    "description": "identifier for overly API",
-                    "type": "string",
-                    "format": "uri"
-                }
-            }
+        "cmd:linkOverlayAPILabel": {
+            "description": "Text to identify the overlay API in a UI. Reference that identifies the API for messages tunneled to a component on the target server.",
+            "type": "string"
         },
-        "cmd:linkProfile": {
-            "description": "Identifier for profile of specifications identified by type, overlayAPI, and template attributes. Optional, provide if additional conventions are necessary for content contained in messages through this link. Note that the same output scheme might be encoded using different types. Profiles typically add usage conventions when the interchange scheme offers alternate approaches, restrict cardinality for elements in the interchange format, or specify usage of particular vocabularies.",
-            "required": ["cmd:profileLabel"],
-            "properties": {
-                "cmd:profileLabel": {
-                    "description": "text to identify the profile in a UI",
-                    "type": "string"
-                },
-                "cmd:profileURI": {
-                    "description": "identifier for the profile",
-                    "type": "string",
-                    "format": "uri"
+        "cmd:linkOverlayAPI-URI": {
+            "description": "Identifier for overly API. Reference that identifies the API for messages tunneled to a component on the target server.  Optional, provide if such scheme or protocol is necessary to utilize the link. The URI should be defined by the service specification for the protocol or service type; version information should be included if applicable.  E.g. OGC WMS, WS-services. This property is typically used for services that encode remote procedure calls using identifiers dereferenced using standard HTTP methods (GET, POST).",
+            "type": "string",
+            "format": "uri"
+        },
+        "cmd:linkAPIDocs": {
+            "description": "array of URLs that will get descriptions of the link operation; particularly targeted for RESTful type links. API doc should describe the resource architecture of the endpoint and provide some example requests, maybe even a template. Each URL is scoped to an API document type, e.g. Swagger, Hydra, Siren, HAL...",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "linkAPIDocType": {
+                        "description": "text string that identifies the API doc type; ideally a URI defined in the API doc specification",
+                        "type": "string"
+                    },
+                    "linkAPIDocURL": {
+                        "description": "URL that will get the API doc describing operation of the link",
+                        "type": "string",
+                        "format": "URI"
+                    }
                 }
             }
+
+        },
+        "cmd:linkProfileLabel": {
+            "description": "Text to identify the profile in a UI. Identifier for profile of specifications identified by type, overlayAPI, and template attributes. Optional, provide if additional conventions are necessary for content contained in messages through this link. Note that the same output scheme might be encoded using different types. Profiles typically add usage conventions when the interchange scheme offers alternate approaches, restrict cardinality for elements in the interchange format, or specify usage of particular vocabularies.",
+            "type": "string"
+        },
+        "cmd:linkProfileURI": {
+            "description": "identifier for the profile",
+            "type": "string",
+            "format": "uri"
         },
         "cmd:linkParameters": {
             "type": "array",
@@ -107,10 +117,6 @@
                     }
                 }
             }
-        },
-        "cmd:linkDescription": {
-            "type": "string",
-            "description": "free text description of the target to help UI"
         },
         "cmd:linkTransferSize": {
             "type": "integer",
