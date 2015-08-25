@@ -1,0 +1,44 @@
+{
+    "@context": {
+        "cmd": "http://resources.usgin.org/uri-gin/cinergi/schema/metadataobjectschema"
+    },
+    "Link": {
+        "cmd:linkURL": "http://uri that locates the link target",
+        "cmd:linkRelation": [{
+                "cmd:relLabel": "text to identify reference relation type",
+                "cmd:relURI": "http://host1.uri for the relation type",
+                "cmd:relVocabularyURI": "http://uri for vocabulary1 in which the relLabel is defined."
+                },
+            {
+                "cmd:relLabel": "text to identify second reference relation type",
+                "cmd:relURI": "http://host2.uri for the relation type",
+                "cmd:relVocabularyURI": "http://uri for vocabulary for second relLabel"
+                }
+						],
+        "cmd:linkTitle": "text to label this link in a UI",
+        "cmd:linkTargetResourceType": "typically use MIME type ",
+        "cmd:linkContentResourceType": "File type (e.g. MIME) for the actual resource content",
+        "cmd:linkOverlayAPI": {
+            "cmd:APILabel": "text to identify the overlay API",
+            "cmd:API-URI": "http://URI for overly API"
+        },
+        "cmd:linkProfile": {
+            "cmd:profileLabel": "text to identify the profile",
+            "cmd:profileURI": "http://URI for the profile"
+        },
+        "cmd:linkParameters": [{
+                "cmd:linkParameterLabel": "string to display for link parameter1",
+                "cmd:linkParameterURI": "identifier for parameter1 from a controlled vocabulary",
+                "cmd:linkParameterValue": "string1"
+                },
+            {
+                "cmd:linkParameterLabel": "string to display for link parameter2",
+                "cmd:linkParameterURI": "identifier for the parameter2 from a controlled vocabulary",
+                "cmd:linkParameterValue": "string2"
+                }
+                    ],
+        "cmd:linkDescription": "free text description of the target to help UI",
+        "cmd:linkTransferSize": 1001
+    }
+
+}
