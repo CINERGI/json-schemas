@@ -83,12 +83,13 @@
                         "type": "array",
                         "cmd:schemaMapping": {
                             "cmd:scheme": "ISO19139",
-                            "cmd:mapPath": "/gmd:MD_Metadata/gmd:contact"
+                            "cmd:mapPath": "/gmd:MD_Metadata/gmd:contact[N]"
                         },
-                        "cmd:template": "definitions/#RelatedAgent",
+                        "cmd:template": "RelatedAgent",
+                        "required": ["cmd:metadataContactRoleLabel", "cmd:metadataContactAgent"],
                         "items": {
                             "type": "object",
-                            "description": "each contact follows the  relatedAgent object template, localized for metadatacontact",
+                            "description": "each contact binds a role with an agent follows the  relatedAgent object template, localized for metadatacontact",
                             "properties": {
                                 "cmd:metadataContactRoleURI": {
                                     "description": "string to uniquely indentify the agent role for interperability",
@@ -108,81 +109,11 @@
                                     "description": "ISO19139 codespace value",
                                     "type": "string"
                                 },
-                                "cmd:metadataContactAgents": {
+                                "cmd:metadataContactAgent": {
                                     "description": "Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization. If the Agent is a person, this should be the same as the PersonURI",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "anyOf": [
-                                                {
-                                                    "cmd:personName": {
-                                                        "type": "string",
-                                                        "description": "The name of an individualformat--Last Name,First name MI"
-                                                    },
-                                                    "cmd:personURI": {
-                                                        "description": "If we have an external URI for the person, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
-                                                        "type": "string",
-                                                        "format": "uri"
-                                                    },
-                                                    "cmd:personPosition": {
-                                                        "type": "string",
-                                                        "description": "identifies an individual who currently holds the named position in context of an organization"
-                                                    },
-                                                    "cmd:organizationName": {
-                                                        "type": "array",
-                                                        "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
-                                                        "items": {
-                                                            "type": "string"
-                                                        },
-                                                        "minItems": 1
-                                                    },
-                                                    "cmd:organizationURI": {
-                                                        "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
-                                                        "type": "string",
-                                                        "format": "uri"
-                                                    }
-                        }],
-                                            "anyOf": [
-                                                {
-                                                    "cmd:voicePhoneNumber": {
-                                                        "description": "Number for voice contact. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        }
-                                                    }
-                        },
-                                                {
-                                                    "cmd:faxPhoneNumber": {
-                                                        "description": "Number to send facsimile images. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string"
-                                                        }
-                                                    }
-                        },
-                                                {
-                                                    "cmd:contactEmail": {
-                                                        "description": "map to foaf:mbox",
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "string",
-                                                            "format": "email"
-                                                        }
-                                                    }
-                    }
-                        ],
-                                            "cmd:contactAddress": {
-                                                "description": "postal address,ideally formatted appropriate to the target country. One field because there is no clear reason to disaggregate the address into street, city, country, postal code, etc...",
-                                                "type": "string"
-                                            },
-                                            "cmd:agentInformation": {
-                                                "description": "text information, providing other details useful for making contact, like hours or ordering instructions",
-                                                "type": "string"
-                                            },
-                                            "cmd:agentLink": {}
-                                        }
+                                    "type": "object",
+                                    "properties": {
+                                        "$ref": "definitions/agent.json#"
                                     }
                                 }
                             }
@@ -232,7 +163,7 @@
                                 },
                                 "cmd:provenanceLink": {
                                     "description": "a URL that will retrieve the complete provenance trace for this record from the PROV service",
-                                    "$ref": "#/definitions/Link"
+                                    "$ref": "definitions/linkObject.json#"
                                 }
                             }
                         }
@@ -377,15 +308,49 @@
                     "cmd:citedSourceAgents": {
                         "description": "intellectual originator and contributors of the resource that metadata record describes.",
                         "type": "array",
+                        "cmd:schemaMapping": {
+                            "cmd:scheme": "ISO19139",
+                            "cmd:mapPath": "/gmd:MD_Metadata/gmd:contact[N]"
+                        },
+                        "cmd:template": "Agent",
+                        "required": ["cmd:citedSourceRoleLabel", "cmd:citedSourceAgent"],
                         "items": {
-                            "$ref": "#/definitions/RelatedAgent"
+                            "type": "object",
+                            "description": "each contact binds a role with an agent follows the relatedAgent object template, localized for a citedSource",
+                            "properties": {
+                                "cmd:citedSourceRoleURI": {
+                                    "description": "string to uniquely indentify the agent role for interperability",
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "cmd:citedSourceRoleLabel": {
+                                    "type": "string",
+                                    "description": "string that users will understand to present role"
+                                },
+                                "cmd:citedSourceRoleVocabularyURI": {
+                                    "description": "identifier for vocabulary in which the agent role is defined.",
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "cmd:citedSourceRoleCodespace": {
+                                    "description": "ISO19139 codespace value",
+                                    "type": "string"
+                                },
+                                "cmd:citedSourceAgent": {
+                                    "description": "Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization.",
+                                    "type": "object",
+                                    "properties": {
+                                        "$ref": "definitions/agent.json#"
+                                    }
+                                }
+                            }
                         }
                     },
                     "cmd:citationDates": {
                         "description": "Each date should scope a different origin event",
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/EventDate"
+                            "$ref": "Definitions/event.json#"
                         }
                     },
                     "cmd:recommendedCitation": {
@@ -394,10 +359,10 @@
                     },
                     "cmd:resourceContacts": {
                         "description": "specification of agent to contact for additional information about the resource. Each relatedAgent has an associated role; various parties may be associated with the resource in different roles.",
-                        "type": "object",
-                        "cmd:template": "#/definitions/RelatedAgent",
-
-                        "properties": {
+                        "type": "array",
+                        "cmd:template": "RelatedAgent",
+                        "required": ["cmd:resourceContactAgent"],
+                        "items": {
                             "cmd:resourceContactRoleURI": {
                                 "description": "string to uniquely indentify the agent role for interperability",
                                 "type": "string",
@@ -416,123 +381,27 @@
                                 "type": "string",
                                 "description": "ISO19139 codespace value; semantics are unclear, included here for compatibility"
                             },
-                            "cmd:resourceContactAgents": {
+                            "cmd:resourceContactAgent": {
                                 "description": "Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization. If the Agent is a person, this should be the same as the PersonURI",
                                 "type": "object",
                                 "properties": {
-                                    "anyOf": [
-                                        {
-                                            "cmd:personName": {
-                                                "type": "string",
-                                                "description": "The name of an individualformat--Last Name,First name MI"
-                                            },
-                                            "cmd:personURI": {
-                                                "description": "If we have an external URI for the person, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
-                                                "type": "string",
-                                                "format": "uri"
-                                            },
-                                            "cmd:personPosition": {
-                                                "type": "string",
-                                                "description": "identifies an individual who currently holds the named position in context of an organization"
-                                            },
-                                            "cmd:organizationNames": {
-                                                "type": "array",
-                                                "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
-                                                "items": {
-                                                    "type": "string"
-                                                },
-                                                "minItems": 1
-                                            },
-                                            "cmd:organizationURI": {
-                                                "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
-                                                "type": "string",
-                                                "format": "uri"
-                                            }
-                        }],
-                                    "anyOf": [
-                                        {
-                                            "cmd:voicePhoneNumbers": {
-                                                "description": "Number for voice contact. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                        },
-                                        {
-                                            "cmd:faxPhoneNumbers": {
-                                                "description": "Number to send facsimile images. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            }
-                        },
-                                        {
-                                            "cmd:contactEmails": {
-                                                "description": "map to foaf:mbox",
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string",
-                                                    "format": "email"
-                                                }
-                                            }
-                    }
-                        ],
-                                    "cmd:contactAddress": {
-                                        "type": "object",
-                                        "description": "postal address,ideally formatted appropriate to the target country. Disaggregate the address into street, city, country, postal code, etc... for compatibility with existing metadata specs, but for most (all?) use cases, the whole address could be put in the delivery point",
-                                        "properties": {
-                                            "cmd:deliveryPoint": {
-                                                "type": "string",
-                                                "description": "street address, PO box.  Full postal address should be in this field if it is not parsed into separate fields."
-                                            },
-                                            "cmd:city": {
-                                                "type": "string",
-                                                "description": "Name of delivery point city"
-                                            },
-                                            "cmd:administrativeArea": {
-                                                "type": "string",
-                                                "description": "name of delivery point state, province, district or other country subdivision"
-                                            },
-                                            "cmd:postalCode": {
-                                                "type": "string",
-                                                "description": "postal code for delivery point, using conventions local to the delivery point"
-                                            },
-                                            "cmd:country": {
-                                                "type": "string",
-                                                "description": "name of country for delivery point"
-                                            }
-                                        }
-                                    },
-                                    "cmd:agentInformation": {
-                                        "description": "text information, providing other details useful for making contact, like hours or ordering instructions",
-                                        "type": "string"
-                                    },
-                                    "cmd:agentLink": {
-                                        "description": "",
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/definitions/Link"
-                                        }
-                                    }
+                                    "$ref": "Definitions/agent.json#"
                                 }
                             }
                         }
-
                     },
                     "cmd:resourceAccessOptions": {
-                        "description": "describes how to access the resource described by the metadata. Corresponds to ISO19115 distribution, but restricts options for representation. Each 'distribution' is an accessLinks array element and may be bound to a distributor. Each object in the accessOptions array contains the offerings from a particular distributor",
+                        "description": "describes how to access the resource described by the metadata. Corresponds to ISO19115 distribution, but restricts options for representation. Each 'distribution' is an accessLinks array element and may be bound to a distributor. Each object in the accessOptions array contains the offerings from a particular distributor or group of distributors",
                         "type": "array",
                         "items": {
                             "type": "object",
                             "required": ["cmd:accessLinks"],
                             "properties": {
-                                "cmd:distributor": {
-                                    "description": "agent responsible for making the resources accessible at the associated URLs or offline locations",
-                                    "cmd:template": "definitions/#RelatedAgent",
-                                    "type": "object",
-                                    "properties": {
+                                "cmd:distributors": {
+                                    "description": "Agent responsible for making the resources accessible at the associated URLs or offline locations. Inclusion of multiple distributors implies that all accessLinks and offlineAccess options included in this element of the resourceAccessOptions array is offered by all the listed distributors.",
+                                    "cmd:template": "Agent",
+                                    "type": "array",
+                                    "items": {
                                         "cmd:distributorRoleURI": {
                                             "description": "string to uniquely indentify the agent role for interperability",
                                             "type": "string",
@@ -551,106 +420,11 @@
                                             "type": "string",
                                             "description": "ISO19139 codespace value; semantics are unclear, included here for compatibility"
                                         },
-                                        "cmd:distributorAgents": {
-                                            "description": "Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization. If the Agent is a person, this should be the same as the PersonURI",
+                                        "cmd:distributorAgent": {
+                                            "description": "An agent who offers and maintains the included accessLinks and offlineAccess options in this element.",
                                             "type": "object",
                                             "properties": {
-                                                "anyOf": [
-                                                    {
-                                                        "cmd:personName": {
-                                                            "type": "string",
-                                                            "description": "The name of an individualformat--Last Name,First name MI"
-                                                        },
-                                                        "cmd:personURI": {
-                                                            "description": "If we have an external URI for the person, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
-                                                            "type": "string",
-                                                            "format": "uri"
-                                                        },
-                                                        "cmd:personPosition": {
-                                                            "type": "string",
-                                                            "description": "identifies an individual who currently holds the named position in context of an organization"
-                                                        },
-                                                        "cmd:organizationNames": {
-                                                            "type": "array",
-                                                            "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
-                                                            "items": {
-                                                                "type": "string"
-                                                            },
-                                                            "minItems": 1
-                                                        },
-                                                        "cmd:organizationURI": {
-                                                            "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
-                                                            "type": "string",
-                                                            "format": "uri"
-                                                        }
-                        }],
-                                                "anyOf": [
-                                                    {
-                                                        "cmd:voicePhoneNumbers": {
-                                                            "description": "Number for voice contact. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                            "type": "array",
-                                                            "items": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                        },
-                                                    {
-                                                        "cmd:faxPhoneNumbers": {
-                                                            "description": "Number to send facsimile images. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                                            "type": "array",
-                                                            "items": {
-                                                                "type": "string"
-                                                            }
-                                                        }
-                        },
-                                                    {
-                                                        "cmd:contactEmails": {
-                                                            "description": "map to foaf:mbox",
-                                                            "type": "array",
-                                                            "items": {
-                                                                "type": "string",
-                                                                "format": "email"
-                                                            }
-                                                        }
-                    }
-                        ],
-                                                "cmd:contactAddress": {
-                                                    "type": "object",
-                                                    "description": "postal address,ideally formatted appropriate to the target country. Disaggregate the address into street, city, country, postal code, etc... for compatibility with existing metadata specs, but for most (all?) use cases, the whole address could be put in the delivery point",
-                                                    "properties": {
-                                                        "cmd:deliveryPoint": {
-                                                            "type": "string",
-                                                            "description": "street address, PO box.  Full postal address should be in this field if it is not parsed into separate fields."
-                                                        },
-                                                        "cmd:city": {
-                                                            "type": "string",
-                                                            "description": "Name of delivery point city"
-                                                        },
-                                                        "cmd:administrativeArea": {
-                                                            "type": "string",
-                                                            "description": "name of delivery point state, province, district or other country subdivision"
-                                                        },
-                                                        "cmd:postalCode": {
-                                                            "type": "string",
-                                                            "description": "postal code for delivery point, using conventions local to the delivery point"
-                                                        },
-                                                        "cmd:country": {
-                                                            "type": "string",
-                                                            "description": "name of country for delivery point"
-                                                        }
-                                                    }
-                                                },
-                                                "cmd:agentInformation": {
-                                                    "description": "text information, providing other details useful for making contact, like hours or ordering instructions",
-                                                    "type": "string"
-                                                },
-                                                "cmd:agentLink": {
-                                                    "description": "",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/definitions/Link"
-                                                    }
-                                                }
+                                                "$ref": "Definitions/agent.json#"
                                             }
                                         }
                                     }
@@ -658,116 +432,38 @@
                                 "cmd:accessLinks": {
                                     "description": "online location that provides some kind of access to the described resource. The link properties are used to characterize the nature of the resource at the specified location.  ***NOTE: need to handle URLs that are templates like OpenSearch templates. ",
                                     "type": "array",
-                                    "cmd:template": "#/definitions/Link",
+                                    "cmd:template": "linkObject",
                                     "minItems": 1,
                                     "items": {
                                         "type": "object",
                                         "properties": {
-                                            "cmd:linkURL": {
-                                                "description": "a web-derferencable identifier that locates the link target; typically an HTTP URI. URI syntax specifies that the identifier string includes a prefix that specifies the base protocol for the identifier",
-                                                "type": "string",
-                                                "format": "uri"
-                                            },
-                                            "cmd:linkURLTemplate":{
-                                            "description":"template for constructing URL; parameter names are in braces; paramaters object contains explanation of parameters"},
-                                            "cmd:linkRelations": {
+                                            "$ref": "Definitions/linkObject.json#",
+                                            "cmd:offeredSpatialReferenceSystems": {
+                                                "description": "identifier and link to definition of spatial reference system used for location information contained in the original version of the resource content. The data may be offered using different SRS by the distributions avaialble.",
                                                 "type": "array",
-                                                "description": "Term from IANA rel vocabulary for consistency with IETF5988. Specifies relationship between resources. Use to assign semantics to the relationship between the linked resources.",
-                                                "required": ["cmd:relLabel"],
                                                 "minItems": 1,
+                                                "required": ["cmd:resourceSpatialReferenceSystemLabel"],
                                                 "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "cmd:relLabel": {
-                                                            "description": "text to identify the reference in a UI",
-                                                            "type": "string"
-                                                        },
-                                                        "cmd:relURI": {
-                                                            "description": "identifier for the reltaion type.",
-                                                            "type": "string",
-                                                            "format": "uri"
-                                                        },
-                                                        "cmd:relVocabularyURI": {
-                                                            "description": "identifier for vocabulary in which the relLabel is defined.",
-                                                            "type": "string",
-                                                            "format": "uri"
-                                                        },
-                                                        "cmd:relCodespace": {
-                                                            "description": "ISO19139 codespace string for rel type from ISO codelist. Use for codespace from CI_OnLineResource//CI_OnLineFunctionCode",
-                                                            "type": "string"
-                                                        }
+                                                    "cmd:distributionSRSLabel": {
+                                                        "description": "label to identify the spaatial reference system in a user interface",
+                                                        "type": "string"
+                                                    },
+                                                    "cmd:distributionSRS-URI": {
+                                                        "description": "identifier for resource spatial reference system",
+                                                        "type": "string",
+                                                        "format": "uri"
+                                                    },
+                                                    "cmd:distributionSRSVocabularyURI": {
+                                                        "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
+                                                        "type": "string",
+                                                        "format": "URI"
                                                     }
                                                 }
-                                            },
-                                            "cmd:linkTitle": {
-                                                "type": "string",
-                                                "description": "text to label this link in a UI"
-                                            },
-                                            "cmd:linkTargetResourceType": {
-                                                "type": "string",
-                                                "description": "typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html. This is the type of the file that will be accessed directly by the link URL; if this is a container file (e.g. zip archive), the linkContentResourceType property is used to specify the type of file with actual resource content."
-                                            },
-                                            "cmd:linkContentResourceType": {
-                                                "description": "File type for the actual resource content. Typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html",
-                                                "type": "string"
-                                            },
-                                            "cmd:linkOverlayAPILabel": {
-                                                "description": "API for messages tunneled to a component on the target server.  Optional, provide if such scheme or protocol is necessary to utilize the link. The URI should be defined by the service specification for the protocol or service type; version information should be included if applicable.  E.g. OGC WMS, WS-services. This property is typically used for services that encode remote procedure calls using identifiers dereferenced using standard HTTP methods (GET, POST). Text to identify the overlay API in a UI",
-                                                "type": "string"
-                                            },
-                                            "cmd:linkOverlayAPI-URI": {
-                                                "description": "identifier for overly API",
-                                                "type": "string",
-                                                "format": "uri"
-                                            },
-                                            "cmd:linkProfileLabel": {
-                                                "description": "Identifier for profile of specifications identified by type, overlayAPI, and template attributes. Optional, provide if additional conventions are necessary for content contained in messages through this link. Note that the same output scheme might be encoded using different types. Profiles typically add usage conventions when the interchange scheme offers alternate approaches, restrict cardinality for elements in the interchange format, or specify usage of particular vocabularies. Text to identify the profile in a UI",
-                                                "type": "string"
-                                            },
-                                            "cmd:linkProfileURI": {
-                                                "description": "identifier for the profile",
-                                                "type": "string",
-                                                "format": "uri"
-                                            },
-                                            "cmd:linkParameters": {
-                                                "type": "array",
-                                                "description": "a dictionary (key-value pairs) of other paramters or properties that need to be associated with the link, e.g. WFS feature typeNames, WMS layer names; if a link template is supplied, items should include templateParameter object",
-                                                "items": {
-                                                    "type": "object",
-                                                    "required": ["cmd:linkParameterLabel", "cmd:linkParameterValue"],
-                                                    "properties": {
-                                                        "cmd:linkParameterLabel": {
-                                                            "type": "string",
-                                                            "description": "string to display, and identifier to link parameter to registry"
-                                                        },
-                                                        "cmd:linkParameterURI": {
-                                                            "description": "identifier for the parameter from a controlled vocabulary",
-                                                            "type": "string",
-                                                            "format": "uri"
-                                                        },
-                                                        "cmd:linkParameterValue": {
-                                                            "description":"if the parameter is a single value, supply here; if the link is a template this string should express the valid domain for parameter values",
-                                                            "type": "string"
-                                                        },
-                                                        "cmd:linkParameterDescription":{
-                                                            "description":"text explanation of meaning and usage of parameter",
-                                                            "type":"string"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "cmd:linkDescription": {
-                                                "type": "string",
-                                                "description": "free text description of the target to help UI"
-                                            },
-                                            "cmd:linkTransferSize": {
-                                                "type": "integer",
-                                                "description": "advisory length of the linked content in octets"
                                             }
                                         }
                                     }
                                 },
-                                "cmd:offlineAccess": {
+                                "cmd:offlineAccessOptions": {
                                     "description": "Array of options for accessing the resource or representations of the resource offline-- by ordering digital or analog media containing electronic representations, hard copy representations, or access to a physical resource like a specimen or artifact. Since offline access will always involve human intervention, the orderingInformation element is probably the key element to populate, all the medium, file, and content format stuff might occasionally be used for searches for data in a particular format--probably not for science but for technology testing!",
                                     "type": "array",
                                     "items": {
@@ -830,7 +526,30 @@
                                                 "description": "unique Identifer for for the format/information structure of the file content, for machine inteoperability; should be registered in a known location",
                                                 "type": "string",
                                                 "format": "URI"
+                                            },
+                                            "cmd:availableSpatialReferenceSystems": {
+                                                "description": "identifier and link to definition of spatial reference system used for location information contained in the original version of the resource content. The data may be offered using different SRS by the distributions avaialble.",
+                                                "type": "array",
+                                                "minItems": 1,
+                                                "required": ["cmd:resourceSpatialReferenceSystemLabel"],
+                                                "items": {
+                                                    "cmd:fileSRSLabel": {
+                                                        "description": "label to identify the spaatial reference system in a user interface",
+                                                        "type": "string"
+                                                    },
+                                                    "cmd:fileSRS-URI": {
+                                                        "description": "identifier for resource spatial reference system",
+                                                        "type": "string",
+                                                        "format": "uri"
+                                                    },
+                                                    "cmd:fileSRSVocabularyURI": {
+                                                        "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
+                                                        "type": "string",
+                                                        "format": "URI"
+                                                    }
+                                                }
                                             }
+
                                         }
                                     }
                                 }
@@ -838,7 +557,7 @@
                         }
                     },
                     "cmd:geographicExtents": {
-                        "description": "schema for documenting geographic footprint of a described resource. Constraint: at least one of extentReference, boundingBoxWGS84, extentGeometry or verticalExtent MUST have a valid value.",
+                        "description": "schema for documenting geographic footprint of a described resource. Allow multiple extents for non contiguous resource, e.g. map of US coasts. Constraint: at least one of extentReference, boundingBoxWGS84, extentGeometry or verticalExtent MUST have a valid value.",
                         "type": "array",
                         "items": {
                             "cmd:extentLabel": {
@@ -1046,44 +765,24 @@
                         }
                     },
                     "cmd:resourceBrowseGraphic": {
-                        "description": "Reference that specifies a graphic resource that provides a visualization of the resource, as well as a URL link that should access the graphic.",
-                        "type": "object",
+                        "description": "Reference that specifies a URL link to access the a graphic that provides a visualization of the resource; array allows inclusion of browse graphics with different resolution and file type.",
+                        "type": "array",
                         "required": ["cmd:resourceBrowseGraphicURL"],
-                        "properties": {
+                        "items": {
                             "cmd:resourceBrowseGraphicURL": {
                                 "description": "a web-derferencable identifier that locates the link target; typically an HTTP URI. URI syntax specifies that the identifier string includes a prefix that specifies the base protocol for the identifier",
                                 "type": "string",
                                 "format": "uri"
                             },
-                            "cmd:linkRelations": {
-                                "type": "array",
-                                "description": "Term from IANA rel vocabulary for consistency with IETF5988. Specifies relationship between resources and or ",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "cmd:linkRelationLabel": {
-                                            "description": "label to identify the link relation in a user interface",
-                                            "type": "string"
-                                        },
-                                        "cmd:linkRelationURI": {
-                                            "description": "identifier for referenced resource",
-                                            "type": "string",
-                                            "format": "uri"
-                                        },
-                                        "cmd:linkRelationVocabularyURI": {
-                                            "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
-                                            "type": "string",
-                                            "format": "URI"
-                                        }
-                                    }
-                                },
-                                "minItems": 1
+                            "cmd:resourceBrowseGraphicDescription": {
+                                "description": "description of the image--resolution, scope, etc.",
+                                "type": "string"
                             },
-                            "cmd:linkTitle": {
+                            "cmd:resourceBrowseGraphicTitle": {
                                 "type": "string",
                                 "description": "text to label this link in a UI"
                             },
-                            "cmd:linkContentResourceType": {
+                            "cmd:resourceBrowseGraphicFileType": {
                                 "description": "File type for the actual resource content. Typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html",
                                 "type": "string"
                             }
@@ -1115,57 +814,50 @@
                             }
                         }
                     },
-                    "cmd:resourceSpatialDescription": {
-                        "description": "Properties characterizing the spatial aspects of the resource, if applicable. Allow multiple extents for non contiguous resource, e.g. map of US coasts.",
+                    "cmd:nativeSpatialRepresentationType": {
+                        "description": "term specifying the nature of the geometric model that is the basis for the dataset, e.g. vector, grid, tin, voxel. This type applies at the 'work' level, there may be distributions that use related spatial representations through various transform, e.g. a web coverage service might offer a gridded representation of data that has a native vector spatial representation.  More complete information on spatial representation (like ISO19115 spatial representation package) is not included here; use extensions in the extras section. Note that the ISO19115-1 codelist does not distinguish 2-D vs. 3-D vector representations, but this is an important distinction.",
                         "type": "object",
                         "properties": {
-                            "cmd:resourceSpatialRepresentationType": {
-                                "description": "term specifying the nature of the geometric representation, e.g. vector, grid, tin, voxel. More complete information on spatial representation (like ISO19115 spatial representation package) is not included here; use extensions in the description details group",
-                                "type": "object",
-                                "properties": {
-                                    "cmd:resourceSpatialRepresentationTypeLabel": {
-                                        "description": "label to identify the Spatial Representation type in a user interface",
-                                        "type": "string"
-                                    },
-                                    "cmd:resourceSpatialRepresentationTypeURI": {
-                                        "description": "identifier for resource Spatial Representation type",
-                                        "type": "string",
-                                        "format": "uri"
-                                    },
-                                    "cmd:resourceSpatialRepresentationTypeVocabularyURI": {
-                                        "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
-                                        "type": "string",
-                                        "format": "URI"
-                                    }
-                                }
+                            "cmd:resourceSpatialRepresentationTypeLabel": {
+                                "description": "label to identify the Spatial Representation type in a user interface",
+                                "type": "string"
                             },
-                            "cmd:resourceSpatialReferenceSystem": {
-                                "description": "identifier and link to definition of spatial reference system used for location information contained in the resource content",
-                                "type": "object",
-                                "properties": {
+                            "cmd:resourceSpatialRepresentationTypeURI": {
+                                "description": "identifier for resource Spatial Representation type",
+                                "type": "string",
+                                "format": "uri"
+                            },
+                            "cmd:resourceSpatialRepresentationTypeVocabularyURI": {
+                                "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
+                                "type": "string",
+                                "format": "URI"
+                            }
+                        }
+                    },
+                    "cmd:nativeSpatialReferenceSystem": {
+                        "description": "identifier and link to definition of spatial reference system used for location information contained in the original version of the resource content. The data may be offered using different SRS by the distributions avaialble.",
+                        "type": "object",
+                        "properties": {
 
-                                    "cmd:resourceSpatialReferenceSystemLabel": {
-                                        "description": "label to identify the spaatial reference system in a user interface",
-                                        "type": "string"
-                                    },
-                                    "cmd:resourceSpatialReferenceSystemURI": {
-                                        "description": "identifier for resource spatial reference system",
-                                        "type": "string",
-                                        "format": "uri"
-                                    },
-                                    "cmd:resourceSpatialReferenceSystemVocabularyURI": {
-                                        "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
-                                        "type": "string",
-                                        "format": "URI"
-                                    }
-                                }
+                            "cmd:resourceSpatialReferenceSystemLabel": {
+                                "description": "label to identify the spaatial reference system in a user interface",
+                                "type": "string"
+                            },
+                            "cmd:resourceSpatialReferenceSystemURI": {
+                                "description": "identifier for resource spatial reference system",
+                                "type": "string",
+                                "format": "uri"
+                            },
+                            "cmd:resourceSpatialReferenceSystemVocabularyURI": {
+                                "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
+                                "type": "string",
+                                "format": "URI"
                             }
                         }
                     },
                     "cmd:resourceInformationModel": {
                         "description": "documentation of the information item types (DataType) and content semantics of structured data resources. Discrete coverage, quantitiative imagery, geospatial features. Synthesis of ISO19115-1, ISO19115-2, CSDGM, ISO11179. Each record or object in a dataset is about some entity. Each record is a description of an instance of the entity in some context, which may be spatial, temporal, or some other independent variable. In the O&M model, the 'entity' corresponds to the feature of interest, and the 'context' corresponds to a sampling feature. The content in this metadata section is focused on the semantics of the data in a dataset, useful for discovery of information of interest. Documentation of encoding, file structure, syntax are handled elsewhere (extras for now). The details of encoding, grid geometry, numeric resolution, and information exchange syntax are particular to each accessOption (distribution) of the dataset. The informaiton model should apply to all distributions.",
                         "type": "array",
-                        "required": [],
                         "items": {
                             "type": "object",
                             "properties": {
@@ -1173,43 +865,32 @@
                                     "description": "the name for this data entity, table, object or feature used in the described data resource",
                                     "type": "string"
                                 },
-                                "cmd:dataTypeName": {
-                                    "description": "Name of this information item, may be registered in a data type registry (c.f. RDA DataTypes).",
-                                    "type": "string"
-                                },
-                                "cmd:dataTypeURI": {
-                                    "description": "unique global identifier that can be dereferenced to establish equivalence or link to the data type specification. Identity of a data type is based on the set of allowed attributes, and the range of subject entities that that dataType is used to describe. The registered data type might be used to bring in the description of the data type instead of including in line",
-                                    "type": "string",
-                                    "format": "URI"
-                                },
-                                "cmd:entityOfInterestName": {
-                                    "description": "name of the domain domain entity (feature) that is the subject of the information in members (records, objects) in a dataset. Example geologic unit, aquifer, Earth surface, river, lake, weather front, ocean current. The feature of interest carries properties that are quantified by some observation process operating on each sampling feature instance",
-                                    "type": "string"
-                                },
-                                "cmd:entityOfInterestURI": {
-                                    "description": "unique identifier for the doamin entity that is the subject of the data.",
-                                    "type": "string",
-                                    "format": "URI"
-                                },
-                                "cmd:entityOfInterestDescription": {
-                                    "description": "free text description of the entity or feature of interest",
-                                    "type": "string"
-                                },
-                                "cmd:samplingBasisName": {
-                                    "description": "name of the entity (samplingFeature) that is the basis for assigning property values to the feature of interest. Examples include borehole interval, ground sampling cell (for a remote sensing image), outcrop station, rock sample, outcrop area, instrument, aggregation (of other data). The spatial representation section describes how the sampling features are geolocated",
-                                    "type": "string"
-                                },
-                                "cmd:samplingBasisURI": {
-                                    "description": "unique identifier for the samplingFeature or other sampling basis entity.",
-                                    "type": "string",
-                                    "format": "URI"
-                                },
-                                "cmd:samplingBasisDescription": {
-                                    "description": "free text description of what was the basis for determining data values describing the entity(feature) of interest that is the subject of this data",
-                                    "type": "string"
-                                },
-                                "cmd:attributes": {
-                                    "description": "This array documents the vector of properties that may be quantified for each data item instance.",
+                                "oneOf": [
+                                    {
+                                        "type": "object",
+                                        "$ref": "Definitions/DataSchemaRev2.json#"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "cmd:dataTypeName": {
+                                                "description": "Name of this information item, may be registered in a data type registry (c.f. RDA DataTypes).",
+                                                "type": "string"
+                                            },
+                                            "cmd:dataTypeURI": {
+                                                "description": "unique global identifier that can be dereferenced to establish equivalence or link to the data type specification. Identity of a data type is based on the set of allowed attributes, and the range of subject entities that that dataType is used to describe. The registered data type might be used to bring in the description of the data type instead of including in line",
+                                                "type": "string",
+                                                "format": "URI"
+                                            },
+                                            "cmd:dataTypeLink": {
+                                                "type": "object",
+                                                "$ref": "Definitions/linkObject.json#"
+                                            }
+                                        }
+                                    }
+                                    ],
+                                "cmd:attributeSummaries": {
+                                    "description": "This array documents the distribution of property values in the described resource. Note the AttributeURIs must be consistent with the attributeURIs in the DataType associated with the resource.  The spatial and temporal extent properties summarize the min and max coordates for coordinate, time sample, or geometry properties.",
                                     "type": "array",
                                     "items": {
                                         "cmd:attributeLabel": {
@@ -1221,86 +902,6 @@
                                             "type": "string",
                                             "format": "URI"
                                         },
-                                        "cmd:attributeContentTypeLabel": {
-                                            "description": "Categorization of the kind of information specified by this attribute, based on ISO19115 CoverageContentType, examples (from ISO19115-1): image, thematicClassification, physicalMeasurement,auxilliaryInformation, qualityInformation,referenceInformation, modelResult, coordinate. Value of 'group' indicates that this attribute instance is defining an attribute group, the attributeURI will be used to group other attributes in this group.",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributeContentTypeURI": {
-                                            "description": "unique identifier for the ContentType, a categorization of the kind of information specified by this attribute, based on ISO19115 CoverageContentType, examples (from ISO19115-1): image, thematicClassification, physicalMeasurement,auxilliaryInformation, qualityInformation,referenceInformation, modelResult, coordinate. Value of 'group' indicates that this attribute instance is defining an attribute group, the attributeURI will be used to group other attributes in this group.",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeContentTypeVocabularyURI": {
-                                            "description": "Unique identifier for the vocabulary within which the content type is identified; if the ContentTypeURI identifier type allows resolution of the vocabulary, this is redundant; for some schemes the TypeURI value may be a toke that is appended to the vocabulary URI to obtain the full TypeURI",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeContentTypeCodespace": {
-                                            "description": "Codespace identifier for the contentType, for compatibility with ISO19115",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributePhenomenonName": {
-                                            "description": "name of the physical phenomenon quantified by this attribute, e.g. fluid flux, planar geospatial orientation, density, velocity.",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributePhenomenonURI": {
-                                            "description": "a registered identifier that uniquely specifies the physical phenomenon quantified by the attribute, for interoperability and linked data",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeGroupURI": {
-                                            "description": "document a group definition as a separate attribute, requires an assigned attributeURI for the group, then use that URI here to aggregate attributes in a group. The GroupURI may be externally defined, but the URI must dereference to provide an explanation of the group.",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeDescription": {
-                                            "description": "text description of the attribute characteristics",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributeMeasurementUnitsName": {
-                                            "description": "name of the unit of measure used to quantify the attribure",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributeMeasurementUnitsURI": {
-                                            "description": "Identifier for the units of measure from some registry, for interoperability",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeDomainVocabularyName": {
-                                            "description": "part of a data type definition, defines the allowed values that may appear in valid attribute instances",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributeDomainVocabularyURI": {
-                                            "description": "Unique idnetiifer for the vocabulary from which values for the attribute are assigned",
-                                            "type": "string",
-                                            "format": "URI"
-                                        },
-                                        "cmd:attributeTermEnumeration": {
-                                            "description": "an array of values that actually appear in the data that quantify this attribute; applies to attributes that have term values that may be user-supplied (not controlled) or from a controlled vocabulary, in which case the values should be consistent withthe attributeVocabulary spcified in the attributeDomain element.",
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "cmd:attributeTerm": {
-                                                        "type": "string"
-                                                    },
-                                                    "cmd:attributeTermDefinition": {
-                                                        "type": "string"
-                                                    },
-                                                    "cmd:termOccurrenceCount": {
-                                                        "type": "integer"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "cmd:attributeNumericMinimum": {
-                                            "description": "The minimum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
-                                            "type": "Number"
-                                        },
-                                        "cmd:attributeNumericMaximum": {
-                                            "description": "The maximum numeric value that occurs in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the minimum and maximum specified here",
-                                            "type": "Number"
-                                        },
                                         "cmd:attributeNumberOfValues": {
                                             "description": "count of the number of data instances that have valid values for this attribute",
                                             "type": "integer"
@@ -1309,303 +910,54 @@
                                             "description": "The mean of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
                                             "type": "Number"
                                         },
+                                        "cmd:attributeMinimumValue": {
+                                            "description": "The minimum of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
+                                            "type": "Number"
+                                        },
+                                        "cmd:attributeMaximumValue": {
+                                            "description": "The maximum of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
+                                            "type": "Number"
+                                        },
                                         "cmd:attributeStandardDeviation": {
                                             "description": "The standard deviation of the valid numeric values that occur in this attribute in the described data; the attribute must have a numeric data type. The attributeMeasurementUnits must have a valid UOM value, and that value MUST apply to the value specified here",
                                             "type": "Number"
-                                        },
-                                        "cmd:attributeQuantityType": {
-                                            "description": "kind of quantifier used to specify values for the attribute. Example values: count, boolean, category (controlled or ad hoc), number (includes magnitude, ratio, coordinate), DateTime, free text",
-                                            "type": "string"
-                                        },
-                                        "cmd:attributeQuantityTypeURI": {
-                                            "description": "Unique identifier, ideally from a registry, for  the kind of quantifier used to specify values for the attribute. For interoperability. Example values: count, boolean, category (controlled or ad hoc), number (includes magnitude, ratio, coordinate), DateTime, free text. A registered vocabulary of standard quantity types needs to be identified. ",
-                                            "type": "string"
                                         },
                                         "cmd:attributeAcquisitionDescription": {
                                             "description": "free text description of the observation procedure, including instrument details, measurement protocols, environmental conditions, etc., content from MI_AcquitisionInformation (ISO19115-2), MD_ImageDescription (ISO19115) specific to the attribute values in the described data resource. Not detailed here because the information is very domain and data specific",
                                             "type": "string"
                                         },
-                                        "cmd:attributeAcquisition": {
-                                            "description": "Structured object documenting the observation procedure for machine clients, including instrument details, measurement protocols, environmental conditions, etc., content from MI_AcquitisionInformation (ISO19115-2), MD_ImageDescription (ISO19115) specific to the attribute values in the described data resource. Not detailed here because the information is very domain and data specific",
-                                            "type": "object"
+
+                                        "cmd:attributeAcquisitionSchemaType": {
+                                            "description": "specify what kind of content is encoded here, with short string for machine processing; Structured object documenting the observation procedure for machine clients, including instrument details, measurement protocols, environmental conditions, etc., content from MI_AcquitisionInformation (ISO19115-2), MD_ImageDescription (ISO19115) specific to the attribute values in the described data resource. Full schema is not detailed here because the information is very domain and data specific",
+                                            "type": "string"
+                                        },
+                                        "cmd:attributeAcquisitionSchemaNote": {
+                                            "description": "explanation of how the data acquisition for this is represented and what kind of content is encoded here, for human reader. Actual detailed attributeAcquisition structure is unstrained JSON blob included following this element.",
+                                            "type": "string"
                                         }
                                     }
+                                },
+                                "cmd:entityRelationships":{
+                                 "description":"TBD, section to assert relationships between entities in this dataset"   
                                 }
                             }
                         }
+                    },
+                    "cmd:dataAcquisitionDescription": {
+                        "description": "free text description of the observation procedure for the dataSet as a whole.  Details for each attribute can cbe included in the attributeSummaries element.  ",
+                        "type": "string"
                     },
                     "cmd:relatedResources": {
                         "description": "links to related resources. The relation property on the link defines the association type, and the link label provides the related resource name",
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/Link"
+                            "$ref": "Definitions/linkObject.json#"
                         }
                     },
                     "cmd:extras": {
                         "type": "object",
                         "description": "this is a wrapper element for additional content that is not in the source document, and does not map to the CINERGI metadata Object but that needs to be included in the  MongoDB records. any properties can be added here. Content in the source document that does not map to the MongoDb Metadata Object should be accessed in the JSONized source document that is in the sourceDocument key of the processing section (cpo:)."
                     }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "cmd:relatedAgent": {
-            "description": "this is a pattern that is used in several places. Needs to be mapped to FOAF agent, with an associated role. The scheme has been worked over to minimize nesting and simplify.",
-            "id": "#RelatedAgent",
-            "type": "object",
-            "properties": {
-                "cmd:agentRoleURI": {
-                    "description": "string to uniquely indentify the agent role for interperability",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:agentRoleLabel": {
-                    "type": "string",
-                    "description": "string that users will understand to present role"
-                },
-                "cmd:agentRoleVocabularyURI": {
-                    "description": "identifier for vocabulary in which the agent role is defined.",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:agentRoleCodespace": {
-                    "type": "string",
-                    "description": "ISO19139 codespace value; semantics are unclear, included here for compatibility"
-                },
-                "cmd:agents": {
-                    "description": "Agent as an identifiable object; could be just an organization, or an individual who may or may not be associated with an organization. If the Agent is a person, this should be the same as the PersonURI",
-                    "type": "object",
-                    "properties": {
-                        "anyOf": [
-                            {
-                                "cmd:personName": {
-                                    "type": "string",
-                                    "description": "The name of an individualformat--Last Name,First name MI"
-                                },
-                                "cmd:personURI": {
-                                    "description": "If we have an external URI for the person, that should go here; otherwise this should be a unique identifier assigned in the CINERGI namespace. At least follow URI syntax (e.g. a prefix for the 'protocol'), even if they are local identifiers.",
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "cmd:personPosition": {
-                                    "type": "string",
-                                    "description": "identifies an individual who currently holds the named position in context of an organization"
-                                },
-                                "cmd:organizationNames": {
-                                    "type": "array",
-                                    "description": "this is an array to allow synonyms to be included (acronyms, abbreviations).",
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "minItems": 1
-                                },
-                                "cmd:organizationURI": {
-                                    "description": "unique identifier for organization; use to link to the organization that the person is affiliated with, in the case that the AgentURI is for the person and they have an organization affiliation. In this case the organizationName is equivalent to the linkLabel property",
-                                    "type": "string",
-                                    "format": "uri"
-                                }
-                        }],
-                        "anyOf": [
-                            {
-                                "cmd:voicePhoneNumbers": {
-                                    "description": "Number for voice contact. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                        },
-                            {
-                                "cmd:faxPhoneNumbers": {
-                                    "description": "Number to send facsimile images. Use registered tel URI scheme for encoding. See http://tools.ietf.org/html/rfc3966",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                        },
-                            {
-                                "cmd:contactEmails": {
-                                    "description": "map to foaf:mbox",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string",
-                                        "format": "email"
-                                    }
-                                }
-                    }
-                        ],
-                        "cmd:contactAddress": {
-                            "type": "object",
-                            "description": "postal address,ideally formatted appropriate to the target country. Disaggregate the address into street, city, country, postal code, etc... for compatibility with existing metadata specs, but for most (all?) use cases, the whole address could be put in the delivery point",
-                            "properties": {
-                                "cmd:deliveryPoint": {
-                                    "type": "string",
-                                    "description": "street address, PO box.  Full postal address should be in this field if it is not parsed into separate fields."
-                                },
-                                "cmd:city": {
-                                    "type": "string",
-                                    "description": "Name of delivery point city"
-                                },
-                                "cmd:administrativeArea": {
-                                    "type": "string",
-                                    "description": "name of delivery point state, province, district or other country subdivision"
-                                },
-                                "cmd:postalCode": {
-                                    "type": "string",
-                                    "description": "postal code for delivery point, using conventions local to the delivery point"
-                                },
-                                "cmd:country": {
-                                    "type": "string",
-                                    "description": "name of country for delivery point"
-                                }
-                            }
-                        },
-                        "cmd:agentInformation": {
-                            "description": "text information, providing other details useful for making contact, like hours or ordering instructions",
-                            "type": "string"
-                        },
-                        "cmd:agentLink": {
-                            "description": "",
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Link"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "cmd:LinkObject": {
-            "id": "#Link",
-            "description": "used for situations that need a link (hypermedia affordance) to an online resource, typically for navigating linked data space.  The link is a locator--an identifier for a location that can provide a digital object.",
-            "type": "object",
-            "required": ["cmd:linkURL"],
-            "properties": {
-                "cmd:linkURL": {
-                    "description": "a web-derferencable identifier that locates the link target; typically an HTTP URI. URI syntax specifies that the identifier string includes a prefix that specifies the base protocol for the identifier",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:linkRelations": {
-                    "type": "array",
-                    "description": "Term from IANA rel vocabulary for consistency with IETF5988. Specifies relationship between resources. Use to assign semantics to the relationship between the linked resources.",
-                    "required": ["cmd:relLabel"],
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "cmd:relLabel": {
-                                "description": "text to identify the reference in a UI",
-                                "type": "string"
-                            },
-                            "cmd:relURI": {
-                                "description": "identifier for the reltaion type.",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "cmd:relVocabularyURI": {
-                                "description": "identifier for vocabulary in which the relLabel is defined.",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "cmd:relCodespace": {
-                                "description": "ISO19139 codespace string for rel type from ISO codelist. Use for codespace from CI_OnLineResource//CI_OnLineFunctionCode",
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "cmd:linkTitle": {
-                    "type": "string",
-                    "description": "text to label this link in a UI"
-                },
-                "cmd:linkTargetResourceType": {
-                    "type": "string",
-                    "description": "typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html. This is the type of the file that will be accessed directly by the link URL; if this is a container file (e.g. zip archive), the linkContentResourceType property is used to specify the type of file with actual resource content."
-                },
-                "cmd:linkContentResourceType": {
-                    "description": "File type for the actual resource content. Typically use MIME type string from IANA registry http : //www.iana.org/assignments/media-types/application/index.html",
-                    "type": "string"
-                },
-                "cmd:linkOverlayAPILabel": {
-                    "description": "API for messages tunneled to a component on the target server.  Optional, provide if such scheme or protocol is necessary to utilize the link. The URI should be defined by the service specification for the protocol or service type; version information should be included if applicable.  E.g. OGC WMS, WS-services. This property is typically used for services that encode remote procedure calls using identifiers dereferenced using standard HTTP methods (GET, POST). Text to identify the overlay API in a UI",
-                    "type": "string"
-                },
-                "cmd:linkOverlayAPI-URI": {
-                    "description": "identifier for overly API",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:linkProfileLabel": {
-                    "description": "Identifier for profile of specifications identified by type, overlayAPI, and template attributes. Optional, provide if additional conventions are necessary for content contained in messages through this link. Note that the same output scheme might be encoded using different types. Profiles typically add usage conventions when the interchange scheme offers alternate approaches, restrict cardinality for elements in the interchange format, or specify usage of particular vocabularies. Text to identify the profile in a UI",
-                    "type": "string"
-                },
-                "cmd:linkProfileURI": {
-                    "description": "identifier for the profile",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:linkParameters": {
-                    "type": "array",
-                    "description": "a dictionary (key-value pairs) of other paramters or properties that need to be associated with the link, e.g. WFS feature typeNames, WMS layer names",
-                    "items": {
-                        "type": "object",
-                        "required": ["cmd:linkParameterLabel", "cmd:linkParameterValue"],
-                        "properties": {
-                            "cmd:linkParameterLabel": {
-                                "type": "string",
-                                "description": "string to display, and identifier to link parameter to registry"
-                            },
-                            "cmd:linkParameterURI": {
-                                "description": "identifier for the parameter from a controlled vocabulary",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "cmd:linkParameterValue": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "cmd:linkDescription": {
-                    "type": "string",
-                    "description": "free text description of the target to help UI"
-                },
-                "cmd:linkTransferSize": {
-                    "type": "integer",
-                    "description": "advisory length of the linked content in octets"
-                }
-            }
-        },
-        "cmd:EventDateObject": {
-            "id": "#EventDate",
-            "type": "object",
-            "required": ["cmd:dateTime"],
-            "properties": {
-                "cmd:dateTypeLabel": {
-                    "description": "label to identify the date type in a user interface",
-                    "type": "string"
-                },
-                "cmd:dateTypeURI": {
-                    "description": "identifier for referenced resource",
-                    "type": "string",
-                    "format": "uri"
-                },
-                "cmd:dateTypeVocabularyURI": {
-                    "description": "identifier for the containing vocabulary (thesaurus, ontology...). Analogous to codelist in ISO19115 or codespace in GML.",
-                    "type": "string",
-                    "format": "URI"
-                },
-                "cmd:dateTypeCodespace": {
-                    "description": "text string for ISO19139 codespace  value.",
-                    "type": "string"
-                },
-                "cmd:dateTime": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "Use ISO 8601: 2011-10-11T14:30"
                 }
             }
         }
